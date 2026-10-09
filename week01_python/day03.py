@@ -1,3 +1,4 @@
+
 """
 Week 01 - Day 03
 Python functions: arguments, scope, and mutability.
@@ -10,12 +11,6 @@ Topics:
 - Local and global scope
 - Mutable versus immutable objects
 - Closures and returning functions
-
-Rules:
-- Implement the functions independently.
-- Do not change a function's signature unless the task asks you to.
-- Write assertions for normal and edge cases.
-- Use English for comments and docstrings.
 """
 
 
@@ -31,7 +26,7 @@ def calculate_tokens(batch_size, sequence_length):
         calculate_tokens(4, 128) -> 512
         calculate_tokens(sequence_length=128, batch_size=4) -> 512
     """
-    pass
+    return batch_size * sequence_length
 
 
 # ============================================================
@@ -46,38 +41,49 @@ def format_experiment_name(model_name, version="v1"):
         format_experiment_name("minigpt") -> "minigpt-v1"
         format_experiment_name("minigpt", "v2") -> "minigpt-v2"
     """
-    pass
+    return f"{model_name}-{version}"
 
 
 # ============================================================
 # Exercise 3 - Positional-only arguments
 # ============================================================
 
-def effective_batch_size(micro_batch, accumulation_steps, /, data_parallel_size=1):
+def effective_batch_size(
+    micro_batch,
+    accumulation_steps,
+    /,
+    data_parallel_size=1,
+):
     """
-    Return micro_batch * accumulation_steps * data_parallel_size.
+    Calculate the effective global batch size.
 
     The first two parameters must be passed positionally.
 
     Example:
         effective_batch_size(8, 4, data_parallel_size=2) -> 64
     """
-    pass
+    return micro_batch * accumulation_steps * data_parallel_size
 
 
 # ============================================================
 # Exercise 4 - Keyword-only arguments
 # ============================================================
 
-def build_optimizer_config(*, learning_rate=0.001, weight_decay=0.01):
+def build_optimizer_config(
+    *,
+    learning_rate=0.001,
+    weight_decay=0.01,
+):
     """
-    Return a new dictionary containing:
-        "learning_rate": learning_rate
-        "weight_decay": weight_decay
+    Return a new dictionary containing optimizer settings.
 
-    Both arguments must be supplied by keyword when overridden.
+    Both parameters must be specified by keyword
+    when overriding their default values.
     """
-    pass
+    return {
+        "learning_rate": learning_rate,
+        "weight_decay": weight_decay,
+    }
 
 
 # ============================================================
@@ -86,15 +92,18 @@ def build_optimizer_config(*, learning_rate=0.001, weight_decay=0.01):
 
 def average_losses(*losses):
     """
-    Return the arithmetic mean of any number of losses.
+    Calculate the arithmetic mean of loss values.
 
-    Return None when no losses are provided.
+    Return None if no losses are provided.
 
     Examples:
         average_losses(1.0, 2.0, 3.0) -> 2.0
         average_losses() -> None
     """
-    pass
+    if not losses:
+        return None
+
+    return sum(losses) / len(losses)
 
 
 # ============================================================
@@ -103,13 +112,20 @@ def average_losses(*losses):
 
 def prefix_metrics(prefix, **metrics):
     """
-    Return a dictionary with prefix added to every metric name.
+    Add a prefix to every metric name.
 
     Example:
         prefix_metrics("train", loss=0.8, accuracy=0.9)
-        -> {"train/loss": 0.8, "train/accuracy": 0.9}
+
+        -> {
+            "train/loss": 0.8,
+            "train/accuracy": 0.9,
+        }
     """
-    pass
+    return {
+        f"{prefix}/{key}": value
+        for key, value in metrics.items()
+    }
 
 
 # ============================================================
@@ -118,17 +134,17 @@ def prefix_metrics(prefix, **metrics):
 
 def summarize_step(step, /, loss, *, learning_rate):
     """
-    Return a dictionary containing step, loss, and learning_rate.
+    Return training step information.
 
-    'step' is positional-only.
-    'loss' may be positional or keyword.
-    'learning_rate' is keyword-only.
-
-    Example:
-        summarize_step(10, loss=1.25, learning_rate=0.001)
-        -> {"step": 10, "loss": 1.25, "learning_rate": 0.001}
+    step: positional-only
+    loss: positional or keyword
+    learning_rate: keyword-only
     """
-    pass
+    return {
+        "step": step,
+        "loss": loss,
+        "learning_rate": learning_rate,
+    }
 
 
 # ============================================================
@@ -137,18 +153,20 @@ def summarize_step(step, /, loss, *, learning_rate):
 
 def add_experiment(name, history=None):
     """
-    Return a NEW list with name appended to history.
+    Return a new list containing the existing experiments
+    followed by the new experiment name.
 
-    When history is None, start from an empty list.
-    Do not mutate a list supplied by the caller.
+    Never modify the caller's original list.
 
     Examples:
         add_experiment("run1") -> ["run1"]
         add_experiment("run2", ["run1"]) -> ["run1", "run2"]
-
-    Do not use history=[] as a default parameter.
     """
-    pass
+    if history is None:
+        history = []
+
+    # List concatenation creates a new list.
+    return history + [name]
 
 
 # ============================================================
@@ -160,12 +178,14 @@ DEFAULT_LEARNING_RATE = 0.001
 
 def choose_learning_rate(learning_rate=None):
     """
-    Return DEFAULT_LEARNING_RATE if learning_rate is None.
-    Otherwise return learning_rate.
+    Return the default learning rate when no value is given.
 
-    Read the module-level constant without changing it.
+    Do not modify the module-level constant.
     """
-    pass
+    if learning_rate is None:
+        return DEFAULT_LEARNING_RATE
+
+    return learning_rate
 
 
 # ============================================================
@@ -176,45 +196,169 @@ def make_multiplier(factor):
     """
     Return a function that multiplies its input by factor.
 
+    The returned function captures factor from
+    the enclosing scope.
+
     Example:
         double = make_multiplier(2)
         double(5) -> 10
-
-    The returned function must remember factor.
     """
-    pass
+    return lambda x: x * factor
 
 
 # ============================================================
-# Mini task - Training report
+# Mini Task - Training Report
 # ============================================================
 
 def create_training_report(config, *losses, **metadata):
     """
-    Build a small training report using function arguments.
+    Create a training report.
 
-    Return:
-        {
-            "config": a shallow copy of config,
-            "num_steps": number of loss values,
-            "average_loss": average of losses, or None if empty,
-            "metadata": a dictionary of keyword arguments,
-        }
+    Args:
+        config:
+            Dictionary containing training configuration.
 
-    Do not modify the caller's config dictionary.
+        *losses:
+            Variable number of training loss values.
 
-    Example:
-        create_training_report(
-            {"batch_size": 8},
-            1.0, 0.8, 0.6,
-            device="cpu",
-            experiment="baseline",
-        )
+        **metadata:
+            Additional information about the experiment.
+
+    Returns:
+        A dictionary containing:
+        - config: shallow copy of the configuration
+        - num_steps: number of recorded losses
+        - average_loss: mean loss or None
+        - metadata: additional experiment information
+
+    The original config dictionary is not modified.
     """
-    pass
+    return {
+        "config": config.copy(),
+        "num_steps": len(losses),
+        "average_loss": average_losses(*losses),
+        "metadata": metadata,
+    }
+
+
+# ============================================================
+# Tests
+# ============================================================
+
+def run_tests():
+    """Run assertions for all exercises."""
+
+    # Exercise 1
+    assert calculate_tokens(4, 128) == 512
+    assert calculate_tokens(
+        sequence_length=128,
+        batch_size=4,
+    ) == 512
+
+    # Exercise 2
+    assert format_experiment_name("minigpt") == "minigpt-v1"
+    assert format_experiment_name("minigpt", "v2") == "minigpt-v2"
+
+    # Exercise 3
+    assert effective_batch_size(8, 4) == 32
+    assert effective_batch_size(
+        8, 4, data_parallel_size=2
+    ) == 64
+
+    # Exercise 4
+    assert build_optimizer_config() == {
+        "learning_rate": 0.001,
+        "weight_decay": 0.01,
+    }
+
+    assert build_optimizer_config(learning_rate=0.01)[
+        "learning_rate"
+    ] == 0.01
+
+    # Exercise 5
+    assert average_losses(1.0, 2.0, 3.0) == 2.0
+    assert average_losses(5.0) == 5.0
+    assert average_losses() is None
+
+    # Exercise 6
+    assert prefix_metrics(
+        "train", loss=0.8, accuracy=0.9
+    ) == {
+        "train/loss": 0.8,
+        "train/accuracy": 0.9,
+    }
+
+    assert prefix_metrics("train") == {}
+
+    # Exercise 7
+    assert summarize_step(
+        10, loss=1.25, learning_rate=0.001
+    ) == {
+        "step": 10,
+        "loss": 1.25,
+        "learning_rate": 0.001,
+    }
+
+    # Exercise 8
+    assert add_experiment("run1") == ["run1"]
+    assert add_experiment("run2") == ["run2"]
+
+    history = ["run1"]
+    result = add_experiment("run2", history)
+
+    assert result == ["run1", "run2"]
+    assert history == ["run1"]
+    assert result is not history
+
+    # Exercise 9
+    assert choose_learning_rate() == 0.001
+    assert choose_learning_rate(0.01) == 0.01
+    assert choose_learning_rate(0) == 0
+    assert DEFAULT_LEARNING_RATE == 0.001
+
+    # Exercise 10
+    double = make_multiplier(2)
+    triple = make_multiplier(3)
+
+    assert double(5) == 10
+    assert triple(5) == 15
+    assert double(5) == 10
+
+    # Mini task
+    config = {"batch_size": 8}
+
+    report = create_training_report(
+        config,
+        1.0,
+        0.8,
+        0.6,
+        device="cpu",
+        experiment="baseline",
+    )
+
+    assert report["config"] == {"batch_size": 8}
+    assert report["num_steps"] == 3
+    assert abs(report["average_loss"] - 0.8) < 1e-9
+    assert report["metadata"] == {
+        "device": "cpu",
+        "experiment": "baseline",
+    }
+
+    # Verify that config was copied.
+    assert report["config"] is not config
+
+    report["config"]["batch_size"] = 16
+    assert config["batch_size"] == 8
+
+    # Test empty losses.
+    empty_report = create_training_report(config)
+
+    assert empty_report["num_steps"] == 0
+    assert empty_report["average_loss"] is None
+    assert empty_report["metadata"] == {}
+
+    print("All Day 03 tests passed!")
 
 
 if __name__ == "__main__":
-    # Add your own assertions for every exercise.
-    # Include tests for empty inputs and repeated function calls.
-    pass
+    run_tests()
