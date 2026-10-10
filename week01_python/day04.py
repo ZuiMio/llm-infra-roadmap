@@ -1,3 +1,4 @@
+
 """
 Week 01 - Day 04
 Python classes and object-oriented programming.
@@ -5,20 +6,12 @@ Python classes and object-oriented programming.
 Topics:
 - class and object
 - __init__ and self
-- Instance attributes and instance methods
-- Class attributes versus instance attributes
-- Encapsulation through methods
+- Instance attributes and methods
+- Class attributes
 - Inheritance and method overriding
 - super()
-- __call__ and callable objects
-- Composition of simple layers
-
-Rules:
-- Implement each class independently.
-- Keep the given class and method names.
-- Do not use NumPy or PyTorch today.
-- Use English comments and docstrings.
-- Add assertions for normal cases, edge cases, and independent instances.
+- __call__
+- Object composition
 """
 
 
@@ -27,26 +20,17 @@ Rules:
 # ============================================================
 
 class Student:
-    """
-    Store a student's name and score.
-
-    Student("Alice", 85).passed() -> True
-    Student("Bob", 59).passed() -> False
-
-    Requirements:
-    - Store name and score as instance attributes.
-    - passed() returns True if score >= 60.
-    - describe() returns a string formatted as "Alice: 85".
-    """
+    """Represent a student with a name and score."""
 
     def __init__(self, name, score):
-        pass
+        self.name = name
+        self.score = score
 
     def passed(self):
-        pass
+        return self.score >= 60
 
     def describe(self):
-        pass
+        return f"{self.name}: {self.score}"
 
 
 # ============================================================
@@ -54,32 +38,17 @@ class Student:
 # ============================================================
 
 class Counter:
-    """
-    A counter that stores its own value.
-
-    Example:
-        a = Counter()
-        b = Counter(start=10)
-        a.increment()
-        b.increment(3)
-        a.value -> 1
-        b.value -> 13
-
-    Requirements:
-    - Store the current value in an instance attribute.
-    - increment(amount=1) increases the value and returns it.
-    - reset() sets the value to zero.
-    - Two Counter instances must not share state.
-    """
+    """Maintain an independent counter."""
 
     def __init__(self, start=0):
-        pass
+        self.value = start
 
     def increment(self, amount=1):
-        pass
+        self.value += amount
+        return self.value
 
     def reset(self):
-        pass
+        self.value = 0
 
 
 # ============================================================
@@ -87,31 +56,22 @@ class Counter:
 # ============================================================
 
 class ModelConfig:
-    """
-    Store a tiny model's configuration.
-
-    Example:
-        config = ModelConfig("minigpt", batch_size=4, seq_len=128)
-        config.tokens_per_batch() -> 512
-        config.to_dict() -> {
-            "model_name": "minigpt",
-            "batch_size": 4,
-            "seq_len": 128,
-        }
-
-    Requirements:
-    - Keep all values as instance attributes.
-    - to_dict() returns a NEW dictionary.
-    """
+    """Store configuration values for a model."""
 
     def __init__(self, model_name, batch_size=1, seq_len=32):
-        pass
+        self.model_name = model_name
+        self.batch_size = batch_size
+        self.seq_len = seq_len
 
     def tokens_per_batch(self):
-        pass
+        return self.batch_size * self.seq_len
 
     def to_dict(self):
-        pass
+        return {
+            "model_name": self.model_name,
+            "batch_size": self.batch_size,
+            "seq_len": self.seq_len,
+        }
 
 
 # ============================================================
@@ -119,33 +79,23 @@ class ModelConfig:
 # ============================================================
 
 class LossTracker:
-    """
-    Record training losses for one experiment.
-
-    Example:
-        tracker = LossTracker()
-        tracker.add(1.0)
-        tracker.add(0.5)
-        tracker.count() -> 2
-        tracker.average() -> 0.75
-
-    Requirements:
-    - Each instance owns its own list of losses.
-    - average() returns None when no losses are recorded.
-    - Do not use a shared class-level list.
-    """
+    """Track loss values for a training experiment."""
 
     def __init__(self):
-        pass
+        # Each instance creates its own list.
+        self.losses = []
 
     def add(self, loss):
-        pass
+        self.losses.append(loss)
 
     def count(self):
-        pass
+        return len(self.losses)
 
     def average(self):
-        pass
+        if not self.losses:
+            return None
+
+        return sum(self.losses) / len(self.losses)
 
 
 # ============================================================
@@ -153,28 +103,18 @@ class LossTracker:
 # ============================================================
 
 class TrainingRun:
-    """
-    Track a training run.
+    """Track the progress of a training run."""
 
-    Requirements:
-    - The shared class attribute framework must equal "pytorch".
-    - name and step are instance attributes.
-    - step starts at zero.
-    - advance_step() adds one and returns the new step.
-
-    Example:
-        run = TrainingRun("baseline")
-        run.framework -> "pytorch"
-        run.advance_step() -> 1
-    """
-
+    # This attribute is shared by instances unless overridden.
     framework = "pytorch"
 
     def __init__(self, name):
-        pass
+        self.name = name
+        self.step = 0
 
     def advance_step(self):
-        pass
+        self.step += 1
+        return self.step
 
 
 # ============================================================
@@ -182,35 +122,22 @@ class TrainingRun:
 # ============================================================
 
 class BaseTransform:
-    """
-    A base class with an identity transform.
-
-    forward(x) returns x without modification.
-    """
+    """Implement an identity transformation."""
 
     def forward(self, x):
-        pass
+        return x
 
 
 class ScaleTransform(BaseTransform):
-    """
-    Extend BaseTransform with a scaling factor.
-
-    Requirements:
-    - Store factor in __init__.
-    - Override forward(x).
-    - Call super().forward(x) inside the overridden method.
-    - Return the base result multiplied by factor.
-
-    Example:
-        ScaleTransform(3).forward(4) -> 12
-    """
+    """Scale the output of the base transformation."""
 
     def __init__(self, factor):
-        pass
+        self.factor = factor
 
     def forward(self, x):
-        pass
+        # Call the parent class implementation.
+        base_output = super().forward(x)
+        return base_output * self.factor
 
 
 # ============================================================
@@ -218,21 +145,10 @@ class ScaleTransform(BaseTransform):
 # ============================================================
 
 class ReLU:
-    """
-    Implement scalar ReLU as a callable object.
-
-    ReLU(x) = max(0, x)
-
-    Example:
-        relu = ReLU()
-        relu(-2) -> 0
-        relu(3) -> 3
-
-    Do not use NumPy or PyTorch.
-    """
+    """Implement scalar ReLU activation."""
 
     def __call__(self, x):
-        pass
+        return max(0, x)
 
 
 # ============================================================
@@ -240,62 +156,43 @@ class ReLU:
 # ============================================================
 
 class Affine:
-    """
-    Implement a scalar affine transformation.
-
-    y = weight * x + bias
-
-    Example:
-        layer = Affine(weight=2, bias=3)
-        layer(5) -> 13
-
-    Requirements:
-    - Store weight and bias as instance attributes.
-    - Implement __call__(x).
-    - Implement set_parameters(weight, bias).
-    """
+    """Implement a scalar affine transformation."""
 
     def __init__(self, weight, bias):
-        pass
+        self.weight = weight
+        self.bias = bias
 
     def __call__(self, x):
-        pass
+        return self.weight * x + self.bias
 
     def set_parameters(self, weight, bias):
-        pass
+        self.weight = weight
+        self.bias = bias
 
 
 # ============================================================
-# Mini task - Compose a tiny neural network
+# Mini Task - Compose a tiny neural network
 # ============================================================
 
 class TinyScalarNetwork:
     """
-    Compose two Affine layers and a ReLU activation.
+    Implement a tiny network using object composition.
 
-    Forward pipeline:
-        x -> Affine(w1, b1) -> ReLU -> Affine(w2, b2) -> output
-
-    Example:
-        net = TinyScalarNetwork(
-            w1=2, b1=-3,
-            w2=4, b2=1,
-        )
-        net(1) -> 1
-        net(3) -> 13
-
-    Requirements:
-    - Create layer1, activation, and layer2 in __init__.
-    - Store them as instance attributes.
-    - Implement __call__(x) using those objects.
-    - Do not repeat the affine or ReLU formulas here.
+    Pipeline:
+        Input -> Affine -> ReLU -> Affine -> Output
     """
 
     def __init__(self, w1, b1, w2, b2):
-        pass
+        self.layer1 = Affine(w1, b1)
+        self.activation = ReLU()
+        self.layer2 = Affine(w2, b2)
 
     def __call__(self, x):
-        pass
+        x = self.layer1(x)
+        x = self.activation(x)
+        x = self.layer2(x)
+
+        return x
 
 
 # ============================================================
@@ -303,21 +200,114 @@ class TinyScalarNetwork:
 # ============================================================
 
 def run_tests():
-    """
-    Write assertions for every exercise.
+    """Verify the behavior of all exercises."""
 
-    Suggested checks:
-    - The two Student examples.
-    - Independent state for two Counters.
-    - ModelConfig tokens_per_batch() and to_dict().
-    - Empty and non-empty LossTracker.
-    - Separate TrainingRun.step values.
-    - ScaleTransform.forward() and its use of super().
-    - ReLU with negative, zero, and positive inputs.
-    - Affine before and after set_parameters().
-    - TinyScalarNetwork with at least two inputs.
-    """
-    pass
+    # Exercise 1
+    alice = Student("Alice", 85)
+    bob = Student("Bob", 59)
+
+    assert alice.passed() is True
+    assert bob.passed() is False
+    assert alice.describe() == "Alice: 85"
+
+    # Exercise 2
+    counter_a = Counter()
+    counter_b = Counter(start=10)
+
+    assert counter_a.increment() == 1
+    assert counter_b.increment(3) == 13
+
+    assert counter_a.value == 1
+    assert counter_b.value == 13
+
+    counter_a.reset()
+    assert counter_a.value == 0
+    assert counter_b.value == 13
+
+    # Exercise 3
+    config = ModelConfig(
+        "minigpt",
+        batch_size=4,
+        seq_len=128,
+    )
+
+    assert config.tokens_per_batch() == 512
+
+    config_dict = config.to_dict()
+
+    assert config_dict == {
+        "model_name": "minigpt",
+        "batch_size": 4,
+        "seq_len": 128,
+    }
+
+    # Verify that a new dictionary is returned.
+    config_dict["batch_size"] = 16
+    assert config.batch_size == 4
+
+    # Exercise 4
+    tracker_a = LossTracker()
+    tracker_b = LossTracker()
+
+    assert tracker_a.average() is None
+    assert tracker_a.count() == 0
+
+    tracker_a.add(1.0)
+    tracker_a.add(0.5)
+
+    assert tracker_a.count() == 2
+    assert tracker_a.average() == 0.75
+
+    # Verify that instances do not share their lists.
+    assert tracker_b.count() == 0
+    assert tracker_a.losses is not tracker_b.losses
+
+    # Exercise 5
+    run_a = TrainingRun("baseline")
+    run_b = TrainingRun("experiment")
+
+    assert TrainingRun.framework == "pytorch"
+    assert run_a.framework == "pytorch"
+
+    assert run_a.advance_step() == 1
+    assert run_a.advance_step() == 2
+    assert run_b.step == 0
+
+    # Exercise 6
+    base = BaseTransform()
+    scale = ScaleTransform(3)
+
+    assert base.forward(4) == 4
+    assert scale.forward(4) == 12
+
+    # Exercise 7
+    relu = ReLU()
+
+    assert relu(-2) == 0
+    assert relu(0) == 0
+    assert relu(3) == 3
+
+    # Exercise 8
+    layer = Affine(weight=2, bias=3)
+
+    assert layer(5) == 13
+
+    layer.set_parameters(weight=3, bias=1)
+
+    assert layer(5) == 16
+
+    # Mini Task
+    net = TinyScalarNetwork(
+        w1=2,
+        b1=-3,
+        w2=4,
+        b2=1,
+    )
+
+    assert net(1) == 1
+    assert net(3) == 13
+
+    print("All Day 04 tests passed!")
 
 
 if __name__ == "__main__":
