@@ -41,13 +41,9 @@ def parse_positive_int(value):
     - Raise ValueError if the integer is zero or negative.
     - Let ValueError propagate for invalid integer strings.
     """
-    try:
-        result = int(value)
-        if result <= 0:
-            raise ValueError("Input must be a positive integer")
-    except ValueError:
-        raise  # Propagate ValueError for invalid integer strings
-
+    result = int(value)
+    if result <= 0:
+        raise ValueError("Input must be a positive integer")
     return result
 
 
@@ -205,10 +201,9 @@ class Countdown:
     def __next__(self):
         if self.start <= 0:
             raise StopIteration
-        else:
-            current = self.start
-            self.start -= 1
-            return current
+        current = self.start
+        self.start -= 1
+        return current
 
 
 # ============================================================
@@ -385,23 +380,95 @@ def summarize_training_log(path):
 # ============================================================
 
 def run_tests():
-    """
-    Write assertions for all exercises.
+    """Check results, error handling, generators, and file I/O."""
 
-    Suggested tests:
-    - Valid and invalid integer inputs.
-    - Division by zero and ordinary division.
-    - Write/read round trips, empty files, and blank lines.
-    - Exhausted iterators and repeated next() calls.
-    - Generator outputs and zero/negative n.
-    - Batches from lists and generators.
-    - Valid, empty, and malformed training logs.
+    def expect_raises(error_type, callback, *args):
+        """Assert that a call raises a specific exception."""
+        try:
+            callback(*args)
+        except error_type:
+            return
+        raise AssertionError(f"Expected {error_type.__name__}")
 
-    Tip:
-        Use tempfile.TemporaryDirectory() and Path() for file tests.
-        Keep the repository free of generated test data.
-    """
-    pass
+    # Exercise 1: invalid strings and non-positive numbers.
+    assert parse_positive_int("12") == 12
+    assert parse_positive_int(3) == 3
+    for value in ("abc", "0", -2):
+        expect_raises(ValueError, parse_positive_int, value)
+
+    # Exercise 2: catch only division-by-zero errors.
+    assert safe_divide(10, 2) == 5.0
+    assert safe_divide(5, 0) is None
+    expect_raises(TypeError, safe_divide, "2", "1")
+
+    # Exercise 6: consume any iterable without overrunning it.
+    assert take_first([10, 20, 30], 2) == [10, 20]
+    assert take_first(iter([10]), 3) == [10]
+    assert take_first([10], 0) == []
+    expect_raises(ValueError, take_first, [1], -1)
+
+    # Exercise 7: an iterator stores its own progress.
+    countdown = Countdown(3)
+    assert iter(countdown) is countdown
+    assert list(countdown) == [3, 2, 1]
+    assert list(countdown) == []
+    expect_raises(StopIteration, next, countdown)
+    assert list(Countdown(0)) == []
+
+    # Exercise 8: generator execution is lazy.
+    assert list(fibonacci_generator(6)) == [0, 1, 1, 2, 3, 5]
+    assert list(fibonacci_generator(0)) == []
+    expect_raises(ValueError, list, fibonacci_generator(-1))
+
+    # Exercise 10: retain the final partial batch.
+    assert list(batch_items(range(5), 2)) == [[0, 1], [2, 3], [4]]
+    assert list(batch_items((i for i in range(4)), 3)) == [
+        [0, 1, 2], [3]
+    ]
+    assert list(batch_items([], 3)) == []
+    expect_raises(ValueError, list, batch_items([1, 2], 0))
+
+    # Test file operations without leaving data in the repository.
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "sample.txt"
+
+        save_lines(path, ["hello", "  world  ", "", "AI"])
+        assert path.read_text(encoding="utf-8") == (
+            "hello\\n  world  \\n\\nAI\\n"
+        )
+        assert load_nonempty_lines(path) == ["hello", "world", "AI"]
+        assert count_file_lines(path) == 4
+        assert list(token_stream(path)) == ["hello", "world", "AI"]
+
+        save_lines(path, [])
+        assert count_file_lines(path) == 0
+        assert load_nonempty_lines(path) == []
+        assert list(token_stream(path)) == []
+
+        metrics_path = Path(directory) / "training.log"
+        metrics_path.write_text("1,1.2\\n\\n2,1.0\\n3,0.8\\n", encoding="utf-8")
+
+        assert list(iter_training_metrics(metrics_path)) == [
+            {"step": 1, "loss": 1.2},
+            {"step": 2, "loss": 1.0},
+            {"step": 3, "loss": 0.8},
+        ]
+
+        summary = summarize_training_log(metrics_path)
+        assert summary["num_steps"] == 3
+        assert abs(summary["average_loss"] - 1.0) < 1e-12
+        assert summary["last_step"] == 3
+
+        metrics_path.write_text("", encoding="utf-8")
+        assert summarize_training_log(metrics_path) == {
+            "num_steps": 0, "average_loss": None, "last_step": None
+        }
+
+        for malformed in ("bad-row\\n", "1,not-a-number\\n"):
+            metrics_path.write_text(malformed, encoding="utf-8")
+            expect_raises(ValueError, list, iter_training_metrics(metrics_path))
+
+    print("All Day 05 tests passed!")
 
 
 if __name__ == "__main__":
