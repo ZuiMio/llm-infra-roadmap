@@ -306,13 +306,14 @@ def summarize_and_project(x, weight, bias):
 
 # Write your answers in NOTES.md BEFORE executing the code.
 #
-# Q1: (4, 3) @ (3, 2)            -> shape = 4, 2
-# Q2: (2, 5, 3) + (3,)           -> shape = 2, 5, 3
-# Q3: (8, 6, 4).mean(axis=1)    -> shape = 8, 4
-# Q4: (2, 3, 4).transpose(0,2,1)-> shape = 2, 4, 3
-# Q5: (4, 3) * (3,)              -> shape = 4, 3
-# Q6: (4, 3) @ (4, 3)            -> valid or error? Why?matrix multiplication needs the first column count to equal the second row
-# Q7: (2, 1, 3) + (1, 4, 1)     -> shape = 2, 4, 3
+# Q1: (4, 3) @ (3, 2)             -> (4, 2)
+# Q2: (2, 5, 3) + (3,)            -> (2, 5, 3)
+# Q3: (8, 6, 4).mean(axis=1)     -> (8, 4)
+# Q4: (2, 3, 4).transpose(0,2,1) -> (2, 4, 3)
+# Q5: (4, 3) * (3,)               -> (4, 3)
+# Q6: (4, 3) @ (4, 3)             -> ValueError: 3 != 4
+#      The inner dimensions of a 2D matrix product must match.
+# Q7: (2, 1, 3) + (1, 4, 1)      -> (2, 4, 3)
 
 
 # ============================================================
@@ -320,21 +321,114 @@ def summarize_and_project(x, weight, bias):
 # ============================================================
 
 def run_tests():
-    """
-    Add assertions for all ten exercises and the mini task.
+    """Check shapes, values, broadcasting, and error cases."""
 
-    Suggested checks:
-    - Correct shape, ndim, size, and dtype information.
-    - Array creation, slicing, and transpose results.
-    - Preserved element values after reshape.
-    - Mean reduction on the intended axis.
-    - Element-wise multiplication versus matrix multiplication.
-    - Broadcasting with (C,) vectors over (B, C) and (B, T, C).
-    - Shape and numeric results of summarize_and_project().
-    - Invalid matrix multiplication dimensions raise ValueError.
-    - Inputs remain unchanged by the functions.
-    """
-    pass
+    # Exercise 1: ndarray metadata.
+    values = [[1, 2, 3], [4, 5, 6]]
+    info = describe_array(values)
+    assert info == {
+        "shape": (2, 3),
+        "ndim": 2,
+        "size": 6,
+        "dtype": str(np.asarray(values).dtype),
+    }
+    assert describe_array([])["shape"] == (0,)
+
+    # Exercise 2: array creation and reshaping.
+    np.testing.assert_array_equal(
+        create_grid(2, 3),
+        np.array([[0, 1, 2], [3, 4, 5]]),
+    )
+    assert create_grid(1, 4).shape == (1, 4)
+
+    # Exercise 3: slicing must preserve two dimensions.
+    matrix = np.arange(8).reshape(2, 4)
+    np.testing.assert_array_equal(
+        select_columns(matrix),
+        np.array([[0, 2], [4, 6]]),
+    )
+    assert select_columns(matrix).ndim == 2
+
+    # Exercise 4: flatten only the time and channel dimensions.
+    x = np.arange(24).reshape(2, 3, 4)
+    original_x = x.copy()
+    flattened = flatten_batch(x)
+    assert flattened.shape == (2, 12)
+    np.testing.assert_array_equal(flattened, x.reshape(2, 12))
+
+    # Exercise 5: transpose must change axis order, not element order.
+    swapped = swap_time_and_channels(x)
+    assert swapped.shape == (2, 4, 3)
+    assert swapped[1, 3, 2] == x[1, 2, 3]
+
+    # Exercise 6: reduce the sequence axis, not the batch or channels.
+    sample = np.array([[[1, 2], [3, 4]]])
+    np.testing.assert_allclose(
+        mean_over_time(sample),
+        np.array([[2.0, 3.0]]),
+    )
+
+    # Exercise 7: element-wise operations and scalar broadcasting.
+    values = np.array([1, 2, 3])
+    np.testing.assert_array_equal(
+        scale_and_shift(values, 2, 1),
+        np.array([3, 5, 7]),
+    )
+
+    # Exercise 8: matrix multiplication differs from element-wise *.
+    a = np.array([[1, 2]])
+    b = np.array([[3], [4]])
+    np.testing.assert_array_equal(
+        multiply_matrices(a, b),
+        np.array([[11]]),
+    )
+    try:
+        multiply_matrices(np.ones((4, 3)), np.ones((4, 3)))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("Mismatched matrix dimensions must fail")
+
+    # Exercise 9: add a one-dimensional bias to every row.
+    inputs = np.array([[1, 2], [3, 4]])
+    bias = np.array([10, 20])
+    inputs_before = inputs.copy()
+    bias_before = bias.copy()
+    np.testing.assert_array_equal(
+        add_bias(inputs, bias),
+        np.array([[11, 22], [13, 24]]),
+    )
+    np.testing.assert_array_equal(inputs, inputs_before)
+    np.testing.assert_array_equal(bias, bias_before)
+
+    # Exercise 10: (C,) broadcasts across both B and T.
+    feature_scale = np.array([2, 3, 4, 5])
+    scaled = scale_features(x, feature_scale)
+    assert scaled.shape == (2, 3, 4)
+    np.testing.assert_array_equal(scaled[0, 0], x[0, 0] * feature_scale)
+
+    # Mini task: reduce T, multiply (C, O), and broadcast the bias.
+    inputs = np.array([
+        [[1, 2], [3, 4]],
+        [[5, 6], [7, 8]],
+    ])
+    weights = np.array([[2, 0, 1], [0, 3, 1]])
+    bias = np.array([1, -1, 2])
+    originals = [array.copy() for array in (inputs, weights, bias)]
+    output = summarize_and_project(inputs, weights, bias)
+    assert output.shape == (2, 3)
+    np.testing.assert_allclose(
+        output,
+        np.array([[5, 8, 7], [13, 20, 15]]),
+    )
+    for array, before in zip((inputs, weights, bias), originals):
+        np.testing.assert_array_equal(array, before)
+
+    # Check the shape quiz's broadcasting example.
+    assert (np.ones((2, 1, 3)) + np.ones((1, 4, 1))).shape == (2, 4, 3)
+    np.testing.assert_array_equal(x, original_x)
+
+    print("All Day 06 tests passed!")
 
 
 if __name__ == "__main__":
