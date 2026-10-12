@@ -1,4 +1,3 @@
-
 """
 Week 01 - Day 05 Additional Learning
 Python exceptions, exception chaining, and exception groups.
@@ -113,6 +112,7 @@ def exception_chaining_example():
 
     except RuntimeError as exc:
         print("Raised:", exc)
+        assert isinstance(exc.__cause__, ConnectionError)
         print("Original cause:", repr(exc.__cause__))
 
 
@@ -244,6 +244,7 @@ def exception_group_example():
         raise_exception_group()
 
     except Exception as exc:
+        assert isinstance(exc, ExceptionGroup)
         print("Caught whole group:", type(exc).__name__)
 
         print(
@@ -251,22 +252,22 @@ def exception_group_example():
             len(exc.exceptions),
         )
 
-    # Method 2: Handle specific exception subgroups.
-    # The except* syntax requires Python 3.11 or newer.
-    # try:
-    #     raise_exception_group()
+    # Method 2: except* splits the group by matching exception type.
+    # Python 3.11 or newer is required.
+    try:
+        raise_exception_group()
 
-    # except* OSError as group:
-    #     print(
-    #         "OSError subgroup:",
-    #         [str(exc) for exc in group.exceptions],
-    #     )
+    except* OSError as group:
+        print(
+            "OSError subgroup:",
+            [str(exc) for exc in group.exceptions],
+        )
 
-    # except* SystemError as group:
-    #     print(
-    #         "SystemError subgroup:",
-    #         [str(exc) for exc in group.exceptions],
-    #     )
+    except* SystemError as group:
+        print(
+            "SystemError subgroup:",
+            [str(exc) for exc in group.exceptions],
+        )
 
 
 # ============================================================
