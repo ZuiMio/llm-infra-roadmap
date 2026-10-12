@@ -54,7 +54,13 @@ def describe_array(values):
 
     Hint: use np.asarray() and str(array.dtype).
     """
-    pass
+    values_array = np.asarray(values)
+    return {
+        "shape": values_array.shape,
+        "ndim": values_array.ndim,
+        "size": values_array.size,
+        "dtype": str(values_array.dtype),
+    }
 
 
 # ============================================================
@@ -75,7 +81,7 @@ def create_grid(rows, cols):
     - Use np.arange() and reshape().
     - Assume rows and cols are positive integers.
     """
-    pass
+    return np.arange(rows * cols).reshape(rows, cols)
 
 
 # ============================================================
@@ -97,7 +103,7 @@ def select_columns(matrix):
     - Use NumPy slicing, not a Python loop.
     - Preserve the two-dimensional output.
     """
-    pass
+    return matrix[:, ::2]
 
 
 # ============================================================
@@ -117,7 +123,8 @@ def flatten_batch(x):
     - Do not hard-code any dimensions.
     - Do not modify the values in x.
     """
-    pass
+    B, T, C = x.shape
+    return x.reshape(B, T * C)
 
 
 # ============================================================
@@ -136,7 +143,7 @@ def swap_time_and_channels(x):
     - Use np.transpose() or ndarray.transpose().
     - Do not flatten or reshape the data to swap axes.
     """
-    pass
+    return x.transpose(0, 2, 1)
 
 
 # ============================================================
@@ -159,7 +166,7 @@ def mean_over_time(x):
     - Use a NumPy reduction with the correct axis.
     - Assume T is nonzero.
     """
-    pass
+    return np.mean(x, axis=1)
 
 
 # ============================================================
@@ -182,7 +189,7 @@ def scale_and_shift(x, scale, shift):
     - Use element-wise operators (* and +), not matrix multiply.
     - Do not modify the inputs.
     """
-    pass
+    return x * scale + shift
 
 
 # ============================================================
@@ -209,7 +216,7 @@ def multiply_matrices(a, b):
     - Use @ or np.matmul(), not element-wise *.
     - Let NumPy report incompatible dimensions.
     """
-    pass
+    return a @ b
 
 
 # ============================================================
@@ -237,7 +244,7 @@ def add_bias(x, bias):
     - Use broadcasting.
     - Do not use explicit Python loops or np.tile().
     """
-    pass
+    return x + bias
 
 
 # ============================================================
@@ -260,7 +267,7 @@ def scale_features(x, feature_scale):
     - Do not use explicit loops or np.tile().
     - Explain in your notes which axes are broadcast.
     """
-    pass
+    return x * feature_scale
 
 
 # ============================================================
@@ -290,7 +297,7 @@ def summarize_and_project(x, weight, bias):
         bias.shape   == (5,)
         result.shape == (2, 5)
     """
-    pass
+    return add_bias(mean_over_time(x) @ weight, bias)
 
 
 # ============================================================
@@ -299,13 +306,13 @@ def summarize_and_project(x, weight, bias):
 
 # Write your answers in NOTES.md BEFORE executing the code.
 #
-# Q1: (4, 3) @ (3, 2)            -> shape = ?
-# Q2: (2, 5, 3) + (3,)           -> shape = ?
-# Q3: (8, 6, 4).mean(axis=1)    -> shape = ?
-# Q4: (2, 3, 4).transpose(0,2,1)-> shape = ?
-# Q5: (4, 3) * (3,)              -> shape = ?
-# Q6: (4, 3) @ (4, 3)            -> valid or error? Why?
-# Q7: (2, 1, 3) + (1, 4, 1)     -> shape = ?
+# Q1: (4, 3) @ (3, 2)            -> shape = 4, 2
+# Q2: (2, 5, 3) + (3,)           -> shape = 2, 5, 3
+# Q3: (8, 6, 4).mean(axis=1)    -> shape = 8, 4
+# Q4: (2, 3, 4).transpose(0,2,1)-> shape = 2, 4, 3
+# Q5: (4, 3) * (3,)              -> shape = 4, 3
+# Q6: (4, 3) @ (4, 3)            -> valid or error? Why?matrix multiplication needs the first column count to equal the second row
+# Q7: (2, 1, 3) + (1, 4, 1)     -> shape = 2, 4, 3
 
 
 # ============================================================
