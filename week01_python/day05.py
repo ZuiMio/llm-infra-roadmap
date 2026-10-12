@@ -41,7 +41,14 @@ def parse_positive_int(value):
     - Raise ValueError if the integer is zero or negative.
     - Let ValueError propagate for invalid integer strings.
     """
-    pass
+    try:
+        result = int(value)
+        if result <= 0:
+            raise ValueError("Input must be a positive integer")
+    except ValueError:
+        raise  # Propagate ValueError for invalid integer strings
+
+    return result
 
 
 # ============================================================
@@ -61,7 +68,10 @@ def safe_divide(a, b):
     - Do not use a bare except.
     - Do not suppress unrelated exceptions.
     """
-    pass
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
 
 
 # ============================================================
@@ -82,7 +92,9 @@ def save_lines(path, lines):
         save_lines(path, ["hello", "world"])
         # File content: "hello\nworld\n"
     """
-    pass
+    with open(path, "w", encoding="utf-8") as f:
+        for line in lines:
+            f.write(line + "\n")
 
 
 # ============================================================
@@ -107,7 +119,8 @@ def load_nonempty_lines(path):
     Result:
         ["hello", "world"]
     """
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        return [line.strip() for line in f if line.strip()]
 
 
 # ============================================================
@@ -124,7 +137,8 @@ def count_file_lines(path):
     - Do not load the whole file into memory.
     - Return 0 for an empty file.
     """
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        return sum(1 for line in f)
 
 
 # ============================================================
@@ -146,7 +160,19 @@ def take_first(iterable, n):
         take_first([10], 3) -> [10]
         take_first([10], 0) -> []
     """
-    pass
+    if n < 0:
+        raise ValueError("n must be non-negative")
+
+    iterator = iter(iterable)
+    result = []
+
+    for _ in range(n):
+        try:
+            result.append(next(iterator))
+        except StopIteration:
+            break
+
+    return result
 
 
 # ============================================================
@@ -171,13 +197,18 @@ class Countdown:
     """
 
     def __init__(self, start):
-        pass
+        self.start = start
 
     def __iter__(self):
-        pass
+        return self
 
     def __next__(self):
-        pass
+        if self.start <= 0:
+            raise StopIteration
+        else:
+            current = self.start
+            self.start -= 1
+            return current
 
 
 # ============================================================
@@ -196,7 +227,13 @@ def fibonacci_generator(n):
         list(fibonacci_generator(6)) -> [0, 1, 1, 2, 3, 5]
         list(fibonacci_generator(0)) -> []
     """
-    pass
+    if n < 0:
+        raise ValueError("n must be non-negative")
+
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
 
 
 # ============================================================
@@ -220,7 +257,10 @@ def token_stream(path):
     Output:
         "hello", "AI", "learn", "infra"
     """
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            for token in line.split():
+                yield token
 
 
 # ============================================================
@@ -245,8 +285,16 @@ def batch_items(iterable, batch_size):
         list(batch_items([], 3))
         -> []
     """
-    pass
-
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive")
+    batch = []
+    for item in iterable:
+        batch.append(item)
+        if len(batch) == batch_size:
+            yield batch
+            batch = []
+    if batch:
+        yield batch
 
 # ============================================================
 # Mini task - Streaming training log analysis
@@ -274,7 +322,21 @@ def iter_training_metrics(path):
     - Raise ValueError for malformed nonempty lines.
     - Do not read the whole file into memory.
     """
-    pass
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split(",")
+            if len(parts) != 2:
+                raise ValueError(f"Malformed line: {line}")
+            step_str, loss_str = parts
+            try:
+                step = int(step_str)
+                loss = float(loss_str)
+            except ValueError as e:
+                raise ValueError(f"Invalid data types in line: {line}") from e
+            yield {"step": step, "loss": loss}
 
 
 def summarize_training_log(path):
@@ -300,7 +362,22 @@ def summarize_training_log(path):
             "last_step": 3,
         }
     """
-    pass
+    num_steps = 0
+    total_loss = 0.0
+    last_step = None
+
+    for metrics in iter_training_metrics(path):
+        num_steps += 1
+        total_loss += metrics["loss"]
+        last_step = metrics["step"]
+
+    average_loss = total_loss / num_steps if num_steps > 0 else None
+
+    return {
+        "num_steps": num_steps,
+        "average_loss": average_loss,
+        "last_step": last_step,
+    }
 
 
 # ============================================================
