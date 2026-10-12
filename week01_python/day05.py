@@ -434,7 +434,7 @@ def run_tests():
 
         save_lines(path, ["hello", "  world  ", "", "AI"])
         assert path.read_text(encoding="utf-8") == (
-            "hello\\n  world  \\n\\nAI\\n"
+            "hello\n  world  \n\nAI\n"
         )
         assert load_nonempty_lines(path) == ["hello", "world", "AI"]
         assert count_file_lines(path) == 4
@@ -446,7 +446,7 @@ def run_tests():
         assert list(token_stream(path)) == []
 
         metrics_path = Path(directory) / "training.log"
-        metrics_path.write_text("1,1.2\\n\\n2,1.0\\n3,0.8\\n", encoding="utf-8")
+        metrics_path.write_text("1,1.2\n\n2,1.0\n3,0.8\n", encoding="utf-8")
 
         assert list(iter_training_metrics(metrics_path)) == [
             {"step": 1, "loss": 1.2},
@@ -464,7 +464,7 @@ def run_tests():
             "num_steps": 0, "average_loss": None, "last_step": None
         }
 
-        for malformed in ("bad-row\\n", "1,not-a-number\\n"):
+        for malformed in ("bad-row\n", "1,not-a-number\n"):
             metrics_path.write_text(malformed, encoding="utf-8")
             expect_raises(ValueError, list, iter_training_metrics(metrics_path))
 
