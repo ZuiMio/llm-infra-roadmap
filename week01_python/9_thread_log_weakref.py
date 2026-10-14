@@ -112,7 +112,7 @@ def main():
     logging_example()
     print("\n=== Weak references ===")
     weak_reference_example()
-    print("\\n=== Tests ===")
+    print("\n=== Tests ===")
     run_tests()
     print("All module 9 examples and tests passed!")
 
