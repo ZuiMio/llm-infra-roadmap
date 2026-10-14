@@ -154,7 +154,7 @@ def main():
     binary_struct_example()
     print("\n=== zipfile ===")
     zip_archive_example()
-    print("\\n=== Tests ===")
+    print("\n=== Tests ===")
     run_tests()
     print("All module 8 examples and tests passed!")
 
