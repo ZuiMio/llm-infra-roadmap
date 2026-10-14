@@ -10,6 +10,7 @@ import logging
 import tempfile
 import threading
 import weakref
+import unittest
 import zipfile
 from pathlib import Path
 
@@ -111,7 +112,42 @@ def main():
     logging_example()
     print("\n=== Weak references ===")
     weak_reference_example()
-    print("All module 9 examples passed!")
+    print("\\n=== Tests ===")
+    run_tests()
+    print("All module 9 examples and tests passed!")
+
+
+class TestReferenceBehavior(unittest.TestCase):
+    """Verify strong and weak references without depending on log output."""
+
+    def test_normal_dict_keeps_object_alive(self):
+        normal = {}
+        item = A(10)
+        normal["primary"] = item
+        del item
+        gc.collect()
+        self.assertEqual(normal["primary"].value, 10)
+
+    def test_weak_value_dictionary_drops_unreferenced_object(self):
+        weak = weakref.WeakValueDictionary()
+        item = A(20)
+        weak["primary"] = item
+        self.assertIs(weak.get("primary"), item)
+        del item
+        gc.collect()
+        self.assertIsNone(weak.get("primary"))
+
+    def test_repr(self):
+        self.assertEqual(repr(A(42)), "42")
+
+
+def run_tests():
+    """Run deterministic weak-reference tests."""
+    result = unittest.TextTestRunner(verbosity=2).run(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestReferenceBehavior)
+    )
+    if not result.wasSuccessful():
+        raise AssertionError("Module 9 tests failed")
 
 
 if __name__ == "__main__":
