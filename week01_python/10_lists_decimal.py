@@ -13,6 +13,7 @@ from array import array
 from bisect import insort
 from collections import deque
 from decimal import Decimal, getcontext, localcontext
+import unittest
 from heapq import heapify, heappop, heappush
 
 
@@ -106,7 +107,50 @@ def main():
     heap_example()
     print("\n=== Decimal ===")
     decimal_example()
-    print("All module 10 examples passed!")
+    print("\\n=== Tests ===")
+    run_tests()
+    print("All module 10 examples and tests passed!")
+
+
+class TestCollectionAndDecimalExamples(unittest.TestCase):
+    """Check deterministic collection operations and Decimal arithmetic."""
+
+    def test_array_example_values(self):
+        numbers = array("H", [4000, 10, 700, 22222])
+        self.assertEqual(sum(numbers), 26932)
+        self.assertEqual(numbers[1:3], array("H", [10, 700]))
+
+    def test_deque_is_fifo(self):
+        tasks = deque(["task1", "task2", "task3"])
+        tasks.append("task4")
+        self.assertEqual(tasks.popleft(), "task1")
+        self.assertEqual(list(tasks), ["task2", "task3", "task4"])
+
+    def test_bisect_keeps_sorted_order(self):
+        scores = [(100, "perl"), (200, "tcl"), (400, "lua"), (500, "python")]
+        insort(scores, (300, "ruby"))
+        self.assertEqual(scores, sorted(scores))
+
+    def test_heap_returns_smallest_items(self):
+        data = [1, 3, 5, 7, 9, 2, 4, 6, 8, 0]
+        heapify(data)
+        heappush(data, -5)
+        self.assertEqual([heappop(data) for _ in range(3)], [-5, 0, 1])
+
+    def test_decimal_tenths_are_exact(self):
+        self.assertEqual(sum([Decimal("0.1")] * 10), Decimal("1.0"))
+        self.assertNotEqual(sum([0.1] * 10), 1.0)
+
+
+def run_tests():
+    """Run unit tests for the collection and Decimal examples."""
+    result = unittest.TextTestRunner(verbosity=2).run(
+        unittest.defaultTestLoader.loadTestsFromTestCase(
+            TestCollectionAndDecimalExamples
+        )
+    )
+    if not result.wasSuccessful():
+        raise AssertionError("Module 10 tests failed")
 
 
 if __name__ == "__main__":
