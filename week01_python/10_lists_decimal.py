@@ -107,7 +107,7 @@ def main():
     heap_example()
     print("\n=== Decimal ===")
     decimal_example()
-    print("\\n=== Tests ===")
+    print("\n=== Tests ===")
     run_tests()
     print("All module 10 examples and tests passed!")
 
