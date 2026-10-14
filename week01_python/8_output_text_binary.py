@@ -15,6 +15,7 @@ import tempfile
 import textwrap
 import time
 import zipfile
+import unittest
 from pathlib import Path
 from string import Template
 
@@ -153,7 +154,39 @@ def main():
     binary_struct_example()
     print("\n=== zipfile ===")
     zip_archive_example()
-    print("All module 8 examples passed!")
+    print("\\n=== Tests ===")
+    run_tests()
+    print("All module 8 examples and tests passed!")
+
+
+class TestFormattingHelpers(unittest.TestCase):
+    """Check stable formatting behavior independently of locale."""
+
+    def test_text_wrap_has_expected_line_width(self):
+        lines = textwrap.wrap("one two three four", width=7)
+        self.assertEqual(lines, ["one two", "three", "four"])
+
+    def test_batch_rename_template(self):
+        template = BatchRename("%{n}_%d%f")
+        self.assertEqual(
+            template.substitute(n=2, d="14Oct26", f=".jpg"),
+            "2_14Oct26.jpg",
+        )
+
+    def test_binary_struct_round_trip(self):
+        fields = (0x12345678, 10, 20, 5, 0)
+        payload = struct.pack("<IIIHH", *fields)
+        self.assertEqual(struct.unpack("<IIIHH", payload), fields)
+        self.assertEqual(len(payload), 16)
+
+
+def run_tests():
+    """Run deterministic tests that do not depend on the system locale."""
+    result = unittest.TextTestRunner(verbosity=2).run(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestFormattingHelpers)
+    )
+    if not result.wasSuccessful():
+        raise AssertionError("Module 8 tests failed")
 
 
 if __name__ == "__main__":
