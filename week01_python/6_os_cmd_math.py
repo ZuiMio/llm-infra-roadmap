@@ -10,6 +10,7 @@ The stdin example is available as a function but is not called by default.
 
 import argparse
 import glob
+import io
 import math
 import os
 import random
@@ -18,7 +19,9 @@ import shutil
 import statistics
 import sys
 import tempfile
+import unittest
 from pathlib import Path
+from contextlib import redirect_stdout, redirect_stderr
 
 
 def operating_system_example():
@@ -136,7 +139,52 @@ def main(argv=None):
     operating_system_example()
     text_processing_example()
     math_random_statistics_example()
-    print("All module 6 examples completed!")
+    print("\\n=== Tests ===")
+    run_tests()
+    print("All module 6 examples and tests completed!")
+
+
+class TestCommandLineHelpers(unittest.TestCase):
+    """Test command-line parsing and file output without external files."""
+
+    def test_parse_command_line_defaults(self):
+        args = parse_command_line(["example.txt"])
+        self.assertEqual(args.filenames, ["example.txt"])
+        self.assertEqual(args.lines, 10)
+
+    def test_parse_command_line_custom_line_count(self):
+        args = parse_command_line(["-l", "3", "a.txt", "b.txt"])
+        self.assertEqual(args.lines, 3)
+        self.assertEqual(args.filenames, ["a.txt", "b.txt"])
+
+    def test_negative_line_count_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            parse_command_line(["--lines", "-1", "example.txt"])
+
+    def test_show_top_lines(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sample.txt"
+            path.write_text("one\\ntwo\\nthree\\n", encoding="utf-8")
+            output = io.StringIO()
+            with redirect_stdout(output):
+                show_top_lines([str(path)], 2)
+            self.assertEqual(
+                output.getvalue(),
+                f"=== {path} ===\\none\\ntwo\\n",
+            )
+
+    def test_negative_line_count_is_rejected_by_helper(self):
+        with self.assertRaises(ValueError):
+            show_top_lines([], -1)
+
+
+def run_tests():
+    """Run focused unit tests for the reusable helper functions."""
+    result = unittest.TextTestRunner(verbosity=2).run(
+        unittest.defaultTestLoader.loadTestsFromTestCase(TestCommandLineHelpers)
+    )
+    if not result.wasSuccessful():
+        raise AssertionError("Module 6 tests failed")
 
 
 if __name__ == "__main__":
