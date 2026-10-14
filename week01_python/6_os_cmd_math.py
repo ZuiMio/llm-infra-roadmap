@@ -139,7 +139,7 @@ def main(argv=None):
     operating_system_example()
     text_processing_example()
     math_random_statistics_example()
-    print("\\n=== Tests ===")
+    print("\n=== Tests ===")
     run_tests()
     print("All module 6 examples and tests completed!")
 
@@ -164,13 +164,13 @@ class TestCommandLineHelpers(unittest.TestCase):
     def test_show_top_lines(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "sample.txt"
-            path.write_text("one\\ntwo\\nthree\\n", encoding="utf-8")
+            path.write_text("one\ntwo\nthree\n", encoding="utf-8")
             output = io.StringIO()
             with redirect_stdout(output):
                 show_top_lines([str(path)], 2)
             self.assertEqual(
                 output.getvalue(),
-                f"=== {path} ===\\none\\ntwo\\n",
+                f"=== {path} ===\none\ntwo\n",
             )
 
     def test_negative_line_count_is_rejected_by_helper(self):
