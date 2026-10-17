@@ -55,3 +55,58 @@ EOF`
 8. 最后：推送到 GitHub
 - `git status`
 - `git push origin main`
+
+
+## Branches and GitHub Workflow
+- Branch（分支）：指向一条提交历史的可移动引用，方便你在不同开发线上工作。
+- Remote branch（远程分支）：例如 GitHub 上的 origin/main，代表 Git 本地记录的远程分支状态。
+- Pull Request（PR）：在 GitHub 上提出将一个分支的变更合并到另一个分支的请求，可以先检查代码再合并。
+
+2. Exercise A：检查并更新 main
+- `git status`
+- `git branch --show-current`
+- `git switch main`	切换到本地的 main 分支
+- `git pull origin main`	获取远程 main 的更新并整合到当前 main
+- `git branch`	列出本地分支，星号表示当前分支
+
+3. Exercise B：创建自己的开发分支
+- `git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。
+- `git branch --show-current`
+- `git status`
+
+
+4. Exercise C：在新分支中创建笔记
+- `mkdir -p week02_system/day04`
+- `cat > week02_system/day04/note.md <<'EOF'......EOF`
+- `git add week02_system/day04/note.md`
+- `git diff --cached`
+- `git commit -m "Add Week 02 Day 04 Git workflow notes"`
+- `git log --oneline -5`
+- `git status`
+
+5. Exercise D：把分支 push 到 GitHub
+- `git push -u origin feature/day04-git-workflow` 这里的 -u 用于设置本地分支的上游分支。
+
+6. Exercise E：合并之后同步本地 main
+- `git switch main`
+- `git pull origin main`
+- `git log --oneline -5`
+- `git status`
+
+如果要删除已经合并的本地开发分支，可以先执行：
+- `git branch --merged`
+- `git branch -d feature/day04-git-workflow`
+
+7. 今天还必须理解的两个命令
+
+`git fetch` 和 `git pull` 有什么区别？
+- `git fetch origin`：获取远程仓库的最新信息，更新本地的远程跟踪分支，但一般不会自动把这些变更合入当前工作分支。
+- `git pull origin main`：获取远程更新，并将指定分支的更新整合到当前分支。整合方式会受 Git 配置影响。
+
+
+`git push` 和 `Pull Request` 有什么区别？
+- `git push` 把本地提交上传到远程仓库。
+- `Pull Request` 是在 GitHub 上请求将来源分支的变更合并到目标分支。
+
+你可以先 push 开发分支，再创建 PR；整个过程无需直接向 main 提交新内容。
+
