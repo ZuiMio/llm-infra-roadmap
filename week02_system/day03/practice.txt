@@ -1,0 +1,4 @@
+job=trainer
+event=start
+status=running
+step=1
