@@ -29,6 +29,9 @@ Run:
     python week01_python/day07.py
 """
 
+import io
+from contextlib import redirect_stdout
+
 import numpy as np
 
 
@@ -186,8 +189,8 @@ def forward_and_loss(model, loss_fn, x, target):
     prediction = model(x)
     loss = loss_fn(prediction, target)
     return {
-        "prediction":prediction,
-        "loss":loss
+        "prediction": prediction,
+        "loss": loss,
     }
 
 
@@ -253,17 +256,17 @@ def run_miniproject():
 
     Do not add backpropagation or parameter updates.
     """
-    # 1. 取 toy 数据
+    # 1. Get the toy dataset.
     x, weight, bias, target = make_toy_example()
 
-    # 2. 构造模型和损失函数
+    # 2. Construct the model and loss function.
     model = TinyNetwork(weight, bias)
     loss_fn = MSELoss()
 
-    # 3. 前向 + 计算损失
+    # 3. Run the forward pass and compute the loss.
     result = forward_and_loss(model=model, loss_fn=loss_fn, x=x, target=target)
 
-    # 4. 打印数值
+    # 4. Print the values.
     print("x        =", x)
     print("weight   =", weight)
     print("bias     =", bias)
@@ -271,14 +274,14 @@ def run_miniproject():
     print("target   =", target)
     print("loss     =", result["loss"])
 
-    # 5. 打印形状
+    # 5. Print the shapes.
     print("x.shape        =", x.shape)
     print("weight.shape   =", weight.shape)
     print("bias.shape     =", bias.shape)
     print("prediction.shape =", result["prediction"].shape)
     print("target.shape   =", target.shape)
 
-    # 6. 返回结果字典
+    # 6. Return the result dictionary.
     return result
 
 
@@ -296,41 +299,154 @@ def run_miniproject():
 # Q6: prediction (4, 2), target (2,)    -> should MSELoss accept this?
 #
 # Explain:
-# - Why is the Linear bias added to every row?
-# - Why does ReLU not change the shape?
-# - What does the mean in MSE average over?
-# - Why can silent broadcasting be dangerous for loss functions?
-
-
-# ============================================================
+# - Why is the Linear # ============================================================
 # Tests
 # ============================================================
 
 def run_tests():
-    """
-    Add assertions for all exercises and the mini project.
+    """Check all exercises, expected values, shapes, and input immutability."""
 
-    Suggested checks:
-    - Linear gives the expected output for known small matrices.
-    - Bias is applied to each sample in a batch.
-    - ReLU handles negative, zero, and positive values.
-    - ReLU preserves shape and does not modify its input.
-    - MSELoss returns the correct numeric value.
-    - MSELoss rejects mismatched shapes.
-    - Two different Linear objects keep independent parameters.
-    - TinyNetwork returns the correct shape and values.
-    - forward_and_loss returns both prediction and loss.
-    - make_toy_example() returns all required shapes.
-    - run_miniproject() works and returns finite numeric results.
+    # Exercise 1: Linear computes x @ weight + bias and broadcasts bias by row.
+    x = np.array([[1.0, 2.0], [3.0, 4.0]])
+    weight = np.array([[2.0, -1.0], [1.0, 3.0]])
+    bias = np.array([0.0, 2.0])
+    x_before, weight_before, bias_before = x.copy(), weight.copy(), bias.copy()
 
-    Hints:
-    - Use np.testing.assert_array_equal for exact integer arrays.
-    - Use np.testing.assert_allclose for floating-point results.
-    - Use np.isfinite() to check numerical results.
-    """
-    pass
+    linear = Linear(weight, bias)
+    linear_output = linear(x)
+    np.testing.assert_allclose(
+        linear_output,
+        np.array([[4.0, 7.0], [10.0, 11.0]]),
+    )
+    assert linear_output.shape == (2, 2)
+    np.testing.assert_array_equal(x, x_before)
+    np.testing.assert_array_equal(weight, weight_before)
+    np.testing.assert_array_equal(bias, bias_before)
+
+    # Different Linear instances can hold independent parameters.
+    first = Linear(np.eye(2), np.zeros(2))
+    second = Linear(np.zeros((2, 2)), np.ones(2))
+    first_output = first(np.array([[2.0, 3.0]]))
+    second_output = second(np.array([[2.0, 3.0]]))
+    np.testing.assert_allclose(first_output, np.array([[2.0, 3.0]]))
+    np.testing.assert_allclose(second_output, np.array([[1.0, 1.0]]))
+    assert first.weight is not second.weight
+
+    # Exercise 2: ReLU handles negative, zero, and positive values.
+    relu_input = np.array([[-2.0, 0.0], [3.0, -4.0]])
+    relu_before = relu_input.copy()
+    relu_output = ReLU()(relu_input)
+    np.testing.assert_array_equal(
+        relu_output,
+        np.array([[0.0, 0.0], [3.0, 0.0]]),
+    )
+    assert relu_output.shape == relu_input.shape
+    assert relu_output is not relu_input
+    np.testing.assert_array_equal(relu_input, relu_before)
+
+    # Exercise 3: MSE returns a scalar and refuses target broadcasting.
+    loss_fn = MSELoss()
+    prediction = np.array([1.0, 3.0])
+    target = np.array([2.0, 1.0])
+    prediction_before, target_before = prediction.copy(), target.copy()
+    loss = loss_fn(prediction, target)
+    np.testing.assert_allclose(loss, 2.5)
+    assert np.ndim(loss) == 0
+    np.testing.assert_array_equal(prediction, prediction_before)
+    np.testing.assert_array_equal(target, target_before)
+
+    try:
+        loss_fn(np.ones((2, 2)), np.ones((2,)))
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("MSELoss must reject mismatched shapes")
+
+    # Exercise 4: TinyNetwork composes Linear and ReLU.
+    network_weight = np.array([[1.0, -1.0], [1.0, 1.0]])
+    network_bias = np.array([0.0, -1.0])
+    network_input = np.array([[1.0, 2.0], [-1.0, 3.0], [2.0, -1.0]])
+    network = TinyNetwork(network_weight, network_bias)
+    network_prediction = network(network_input)
+    np.testing.assert_allclose(
+        network_prediction,
+        np.array([[3.0, 0.0], [2.0, 3.0], [1.0, 0.0]]),
+    )
+    assert network_prediction.shape == (3, 2)
+
+    # Exercise 5: forward_and_loss returns the prediction and scalar loss.
+    result = forward_and_loss(network, loss_fn, network_input, np.zeros((3, 2)))
+    assert set(result) == {"prediction", "loss"}
+    np.testing.assert_allclose(result["prediction"], network_prediction)
+    np.testing.assert_allclose(
+        result["loss"],
+        np.mean(network_prediction ** 2),
+    )
+    assert np.ndim(result["loss"]) == 0
+
+    # Exercise 6: the deterministic toy data has the documented shapes and
+    # produces at least one negative pre-activation before ReLU.
+    toy_x, toy_weight, toy_bias, toy_target = make_toy_example()
+    assert toy_x.shape == (3, 2)
+    assert toy_weight.shape == (2, 2)
+    assert toy_bias.shape == (2,)
+    assert toy_target.shape == (3, 2)
+    pre_activation = toy_x @ toy_weight + toy_bias
+    assert np.any(pre_activation < 0)
+
+    expected_toy_prediction = np.array([
+        [3.0, 0.0],
+        [2.0, 3.0],
+        [1.0, 0.0],
+    ])
+    toy_network = TinyNetwork(toy_weight, toy_bias)
+    toy_result = forward_and_loss(
+        toy_network,
+        loss_fn,
+        toy_x,
+        toy_target,
+    )
+    np.testing.assert_allclose(
+        toy_result["prediction"],
+        expected_toy_prediction,
+    )
+    np.testing.assert_allclose(toy_result["loss"], 13.0 / 6.0)
+
+    # Mini project: verify that it prints the required information and
+    # returns finite numeric results without polluting test output.
+    output_buffer = io.StringIO()
+    with redirect_stdout(output_buffer):
+        project_result = run_miniproject()
+
+    printed_output = output_buffer.getvalue()
+    for label in (
+        "x        =",
+        "weight   =",
+        "bias     =",
+        "prediction =",
+        "target   =",
+        "loss     =",
+        "x.shape",
+        "weight.shape",
+        "bias.shape",
+        "prediction.shape",
+        "target.shape",
+    ):
+        assert label in printed_output, f"Missing project output: {label}"
+
+    assert project_result["prediction"].shape == (3, 2)
+    assert np.all(np.isfinite(project_result["prediction"]))
+    assert np.isfinite(project_result["loss"])
+
+    print("All Day 07 tests passed!")
+
+
+def main():
+    """Run the tests, then print the end-to-end mini-project example."""
+    run_tests()
+    print("\n--- Day 07 mini project ---")
+    run_miniproject()
 
 
 if __name__ == "__main__":
-    # Complete run_tests() before considering Day 07 finished.
-    run_tests()
+    main()
