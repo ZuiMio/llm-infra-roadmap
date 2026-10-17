@@ -64,10 +64,11 @@ class Linear:
     """
 
     def __init__(self, weight, bias):
-        pass
+        self.weight = weight
+        self.bias = bias
 
     def __call__(self, x):
-        pass
+        return x @ self.weight + self.bias
 
 
 # ============================================================
@@ -92,7 +93,8 @@ class ReLU:
     """
 
     def __call__(self, x):
-        pass
+        x = np.asarray(x)
+        return np.maximum(x, 0)
 
 
 # ============================================================
@@ -120,7 +122,17 @@ class MSELoss:
     """
 
     def __call__(self, prediction, target):
-        pass
+        prediction = np.asarray(prediction)
+        target = np.asarray(target)
+        if prediction.shape != target.shape:
+            raise ValueError(
+                f"Shape mismatch: prediction has shape {prediction.shape}, "
+                f"but target has shape {target.shape}."
+            )
+
+        diff = prediction - target          # creates a new array, no in-place modification
+        return np.mean(diff ** 2)
+
 
 
 # ============================================================
@@ -145,10 +157,11 @@ class TinyNetwork:
     """
 
     def __init__(self, weight, bias):
-        pass
+        self.linear = Linear(weight, bias)
+        self.activation = ReLU()
 
     def __call__(self, x):
-        pass
+        return self.activation(self.linear(x))
 
 
 # ============================================================
@@ -170,7 +183,12 @@ def forward_and_loss(model, loss_fn, x, target):
     - Call loss_fn(prediction, target).
     - Do not compute the loss manually here.
     """
-    pass
+    prediction = model(x)
+    loss = loss_fn(prediction, target)
+    return {
+        "prediction":prediction,
+        "loss":loss
+    }
 
 
 # ============================================================
@@ -195,7 +213,26 @@ def make_toy_example():
       before ReLU, so you can test the activation.
     - Keep this example small enough to calculate by hand.
     """
-    pass
+    x = np.array([
+        [ 1.0,  2.0],
+        [-1.0,  3.0],
+        [ 2.0, -1.0],
+    ])  # shape (3, 2)
+
+    weight = np.array([
+        [ 1.0, -1.0],
+        [ 1.0,  1.0],
+    ])  # shape (2, 2)
+
+    bias = np.array([0.0, -1.0])  # shape (2,)
+
+    target = np.array([
+        [ 1.0,  0.0],
+        [ 0.0,  1.0],
+        [ 1.0,  1.0],
+    ])  # shape (3, 2)
+
+    return x, weight, bias, target
 
 
 # ============================================================
@@ -216,7 +253,33 @@ def run_miniproject():
 
     Do not add backpropagation or parameter updates.
     """
-    pass
+    # 1. 取 toy 数据
+    x, weight, bias, target = make_toy_example()
+
+    # 2. 构造模型和损失函数
+    model = TinyNetwork(weight, bias)
+    loss_fn = MSELoss()
+
+    # 3. 前向 + 计算损失
+    result = forward_and_loss(model=model, loss_fn=loss_fn, x=x, target=target)
+
+    # 4. 打印数值
+    print("x        =", x)
+    print("weight   =", weight)
+    print("bias     =", bias)
+    print("prediction =", result["prediction"])
+    print("target   =", target)
+    print("loss     =", result["loss"])
+
+    # 5. 打印形状
+    print("x.shape        =", x.shape)
+    print("weight.shape   =", weight.shape)
+    print("bias.shape     =", bias.shape)
+    print("prediction.shape =", result["prediction"].shape)
+    print("target.shape   =", target.shape)
+
+    # 6. 返回结果字典
+    return result
 
 
 # ============================================================
