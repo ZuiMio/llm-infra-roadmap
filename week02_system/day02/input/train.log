@@ -1,0 +1,10 @@
+INFO job=trainer event=start
+INFO job=trainer event=load_data
+WARNING job=trainer event=slow_batch
+INFO job=trainer event=step_complete
+ERROR job=trainer event=oom
+WARNING job=trainer event=retry
+INFO job=trainer event=restart
+ERROR job=trainer event=timeout
+INFO job=trainer event=cleanup
+ERROR job=trainer event=oom

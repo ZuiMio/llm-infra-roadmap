@@ -1,0 +1,5 @@
+WARNING job=trainer event=slow_batch
+ERROR job=trainer event=oom
+WARNING job=trainer event=retry
+ERROR job=trainer event=timeout
+ERROR job=trainer event=oom
