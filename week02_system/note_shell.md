@@ -7,6 +7,31 @@
 - `find . -type f`：在当前目录下查找所有的普通文件。
 - `cp input/train.log output/train-copy.log`：复制文件，将源文件复制并重命名/存放到目标路径。
 
+touch + 编辑器（最常用，适合写正式内容）
+```
+touch hello.py            # 创建一个空文件
+nano hello.py             # 用 nano 打开编辑（推荐新手）
+# 或者
+vim hello.py              # 用 vim（会用的自然懂）
+# 或者 VS Code
+code hello.py
+```
+echo 一行写入（适合快速写入/追加）
+
+```
+# 覆盖写入（文件不存在会创建，存在则清空重写）
+echo "print('hello')" > hello.py
+
+# 追加写入（不覆盖原有内容）
+echo "print('world')" >> hello.py
+
+# 写多行，用 $'...' 处理换行
+echo $'line1\nline2' > test.txt
+
+# 或者用 printf（比 echo 更可控，不带尾部换行）
+printf "hello" > note.txt
+printf "line1\nline2\n" > note.txt
+```
 ---
 
 ## 📖 二、 文件查看与内容统计
