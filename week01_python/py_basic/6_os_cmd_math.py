@@ -73,7 +73,7 @@ def parse_command_line(argv):
         prog="top",
         description="Show the top lines from each file.",
     )
-    parser.add_argument("filenames", nargs="+")
+    parser.add_argument("filenames", nargs="+") # no-,--: 位置参数（Positional Argument），'+' consumes one or more arguments (and produces a list)
     parser.add_argument("-l", "--lines", type=int, default=10)
     args = parser.parse_args(argv)
     if args.lines < 0:
