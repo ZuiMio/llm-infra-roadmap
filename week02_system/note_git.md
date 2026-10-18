@@ -70,7 +70,7 @@ EOF`
 - `git branch`	列出本地分支，星号表示当前分支
 
 3. Exercise B：创建自己的开发分支
-- `git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。
+- **`git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。**
 - `git branch --show-current`
 - `git status`
 
@@ -85,7 +85,7 @@ EOF`
 - `git status`
 
 5. Exercise D：把分支 push 到 GitHub
-- `git push -u origin feature/day04-git-workflow` 这里的 -u 用于设置本地分支的上游分支。
+- **`git push -u origin feature/day04-git-workflow` 这里的 -u 用于设置本地分支的上游分支。**
 
 6. Exercise E：合并之后同步本地 main
 - `git switch main`
@@ -95,12 +95,15 @@ EOF`
 
 如果要删除已经合并的本地开发分支，可以先执行：
 - `git branch --merged`
+
+确认 feature/day04-git-workflow 已合并后，再执行：
+
 - `git branch -d feature/day04-git-workflow`
 
 7. 今天还必须理解的两个命令
 
 `git fetch` 和 `git pull` 有什么区别？
-- `git fetch origin`：获取远程仓库的最新信息，更新本地的远程跟踪分支，但一般不会自动把这些变更合入当前工作分支。
+- `git fetch origin`：获取远程仓库的最新信息，更新本地的远程跟踪分支，但一般不会自动把这些变更合入当前工作分支。**
 - `git pull origin main`：获取远程更新，并将指定分支的更新整合到当前分支。整合方式会受 Git 配置影响。
 
 
