@@ -41,7 +41,6 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     # TODO 3: Configure logging based on args.log_level.
-    logging.basicConfig(level=args.log_level)
     logging.basicConfig(
         level=getattr(logging, args.log_level),
         format="%(levelname)s:%(name)s:%(message)s",
