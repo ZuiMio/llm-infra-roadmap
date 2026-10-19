@@ -28,3 +28,16 @@
 - Which functions can be reused in another project?
 - How does the CLI communicate failure to a shell script?
 - Which test was most useful, and why?
+
+
+git status
+
+git diff
+
+git add week02_system/day07
+
+git diff --cached
+
+git commit -m "Complete Week 02 Day 07 log analyzer"
+
+git push -u origin feature/day07-training-log-analyzer
