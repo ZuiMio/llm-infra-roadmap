@@ -1,0 +1,6 @@
+INFO service start
+WARNING request queue high
+INFO batch=16
+ERROR timeout while loading checkpoint
+ERROR worker exited
+INFO cleanup complete

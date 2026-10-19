@@ -1,0 +1,21 @@
+{
+  "files": [
+    {
+      "file": "week02_system/day07/input/trainer_a.log",
+      "total_lines": 8,
+      "error_count": 1,
+      "warning_count": 2
+    },
+    {
+      "file": "week02_system/day07/input/trainer_b.log",
+      "total_lines": 6,
+      "error_count": 2,
+      "warning_count": 1
+    }
+  ],
+  "total": {
+    "total_lines": 14,
+    "error_count": 3,
+    "warning_count": 3
+  }
+}

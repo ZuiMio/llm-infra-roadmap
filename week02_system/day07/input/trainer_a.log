@@ -1,0 +1,8 @@
+INFO training started
+INFO epoch=1 step=1 loss=1.24
+WARNING dataloader slow
+INFO epoch=1 step=2 loss=1.10
+ERROR cuda out of memory
+INFO retry=1
+WARNING gpu utilization low
+INFO training resumed
