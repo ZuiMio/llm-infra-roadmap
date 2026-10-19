@@ -30,6 +30,12 @@
 - Which test was most useful, and why?
 
 
+python3.14 -m week02_system.day07.log_analyzer \
+  week02_system/day07/input/trainer_a.log \
+  week02_system/day07/input/trainer_b.log \
+  --output week02_system/day07/output/report.json \
+  --log-level INFO
+
 git status
 
 git diff
