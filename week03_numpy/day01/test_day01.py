@@ -1,10 +1,11 @@
 """Unit tests for Week 03 Day 01 NumPy layout exercises."""
 
+# python -m unittest week03_numpy.day01.test_day01
 import unittest
 
 import numpy as np
 
-from week03_numpy.day01 import (
+from week03_numpy.day01.day01 import (
     describe_array,
     slice_view_and_copy,
     transpose_layout,
