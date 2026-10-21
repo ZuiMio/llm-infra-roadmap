@@ -1,5 +1,7 @@
 # Week 03 — Day 01 Notes
 
+source week02_system/day05/.venv/bin/activate
+
 ## Predictions Before Running
 
 For an array created by np.arange(12, dtype=np.float64).reshape(3, 4):

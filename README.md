@@ -26,6 +26,21 @@ Build the engineering fundamentals required to work toward:
 - [ ] Day 6: NumPy and tensor-shape thinking
 - [ ] Day 7: mini project — Linear → ReLU → MSE
 
+### Current Focus — Week 3: NumPy and Tensor Thinking
+
+Day 2 covers advanced indexing, boolean masks, conditional replacement, and copy behavior.
+
+- [Week 3 learning guide](week03_numpy/README.md)
+- [Day 2 starter code](week03_numpy/day02/day02.py)
+- [Day 2 tests](week03_numpy/day02/test_day02.py)
+- [Day 2 notes](week03_numpy/day02/note_day02.md)
+
+Run the Day 2 tests from the repository root:
+
+```bash
+python3.14 -m unittest week03_numpy.day02.test_day02 -v
+```
+
 ## Roadmap
 
 - [ ] Week 1: Python foundations

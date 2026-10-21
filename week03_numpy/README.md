@@ -2,7 +2,7 @@
 
 ## Goal
 
-Use NumPy beyond basic syntax. Focus on array memory behavior, shape reasoning, vectorized operations, reductions, and batched matrix multiplication. These ideas prepare for PyTorch tensors in Week 04.
+Use NumPy beyond basic syntax. Focus on array memory behavior, indexing, shape reasoning, vectorized operations, reductions, and batched matrix multiplication. These ideas prepare for PyTorch tensors in Week 04.
 
 ## Seven-Day Plan
 
@@ -26,30 +26,54 @@ Use NumPy only during this week. Do not use PyTorch yet.
 
 ## Day 1 — Memory and Layout
 
-Starter code: day01.py
-Tests: test_day01.py
-Notes: note.md
+Starter code: [day01/day01.py](day01/day01.py)  
+Tests: [day01/test_day01.py](day01/test_day01.py)  
+Notes: [note.md](note.md)
 
-From the repository root, run:
+Run from the repository root:
 
-    python3.14 -m unittest week03_numpy.test_day01 -v
+```bash
+python3.14 -m unittest week03_numpy.day01.test_day01 -v
+```
+
+## Day 2 — Indexing and Copy Behavior
+
+Starter code: [day02/day02.py](day02/day02.py)  
+Tests: [day02/test_day02.py](day02/test_day02.py)  
+Notes: [day02/note_day02.md](day02/note_day02.md)
+
+Today's exercises cover integer-array indexing, boolean masks, conditional replacement without mutating the source, and paired row/column coordinates.
+
+Run from the repository root:
+
+```bash
+python3.14 -m unittest week03_numpy.day02.test_day02 -v
+```
 
 The starter tests are expected to fail until you replace the TODOs.
 
 ## Git Workflow
 
-Use the development branch: feature/week03-numpy-tensor-thinking
+Create a task branch from the latest `main`, for example:
+
+```bash
+git switch main
+git pull
+git switch -c feature/week03-day02-indexing
+```
 
 When your work is ready:
 
-    git status
-    git diff
-    git add week03_numpy
-    git diff --cached
-    git commit -m "Complete Week 03 Day 01 NumPy layout exercises"
-    git push -u origin feature/week03-numpy-tensor-thinking
+```bash
+git status
+git diff
+git add week03_numpy
+git diff --cached
+git commit -m "Complete Week 03 Day 02 NumPy indexing exercises"
+git push -u origin feature/week03-day02-indexing
+```
 
-Open a Pull Request into main after the tests pass.
+Open a Pull Request into `main` after the tests pass.
 
 ## Definition of Done for Day 1
 
@@ -58,4 +82,13 @@ Open a Pull Request into main after the tests pass.
 - [ ] Demonstrate that a copied slice does not share memory with its source.
 - [ ] Explain why a transpose may be non-contiguous.
 - [ ] Pass all Day 1 tests.
-- [ ] Complete note.md.
+- [ ] Complete the Day 1 notes.
+
+## Definition of Done for Day 2
+
+- [ ] Use integer-array indexing and explain why the selected result is a copy.
+- [ ] Filter values with a boolean mask and validate mask shape and dtype.
+- [ ] Replace values conditionally without modifying the source array.
+- [ ] Select paired matrix coordinates using row and column index arrays.
+- [ ] Pass all Day 2 tests.
+- [ ] Complete [note_day02.md](day02/note_day02.md).
