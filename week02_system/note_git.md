@@ -86,8 +86,9 @@ EOF`
 - `git branch`	列出本地分支，星号表示当前分支
 
 3. Exercise B：创建自己的开发分支
+- `git fetch origin`
 - **`git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。**
-- `git switch -c feature/week03-numpy-tensor-thinking --track origin/feature/week03-numpy-tensor-thinking`
+- `git switch -c feature/ --track origin/feature/`
 - `git branch --show-current`
 - `git status`
 
@@ -107,6 +108,7 @@ EOF`
 6. Exercise E：合并之后同步本地 main
 - `git switch main`
 - `git pull origin main`
+- `git merge feature`
 - `git log --oneline -5`
 - `git status`
 
@@ -116,6 +118,8 @@ EOF`
 确认 feature/day04-git-workflow 已合并后，再执行：
 
 - `git branch -d feature/day04-git-workflow`
+- `git push origin --delete feature`
+
 
 7. 今天还必须理解的两个命令
 
