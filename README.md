@@ -28,17 +28,17 @@ Build the engineering fundamentals required to work toward:
 
 ### Current Focus — Week 3: NumPy and Tensor Thinking
 
-Day 2 covers advanced indexing, boolean masks, conditional replacement, and copy behavior.
+Day 3 focuses on broadcasting and vectorization: feature-wise bias addition, row-wise scaling, feature standardization, and ReLU.
 
 - [Week 3 learning guide](week03_numpy/README.md)
-- [Day 2 starter code](week03_numpy/day02/day02.py)
-- [Day 2 tests](week03_numpy/day02/test_day02.py)
-- [Day 2 notes](week03_numpy/day02/note_day02.md)
+- [Day 3 starter code](week03_numpy/day03/day03.py)
+- [Day 3 tests](week03_numpy/day03/test_day03.py)
+- [Day 3 notes](week03_numpy/day03/note_day03.md)
 
-Run the Day 2 tests from the repository root:
+Run the Day 3 tests from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day02.test_day02 -v
+python3.14 -m unittest week03_numpy.day03.test_day03 -v
 ```
 
 ## Roadmap
