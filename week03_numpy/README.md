@@ -30,8 +30,6 @@ Starter code: [day01/day01.py](day01/day01.py)
 Tests: [day01/test_day01.py](day01/test_day01.py)  
 Notes: [note.md](note.md)
 
-Run from the repository root:
-
 ```bash
 python3.14 -m unittest week03_numpy.day01.test_day01 -v
 ```
@@ -41,10 +39,6 @@ python3.14 -m unittest week03_numpy.day01.test_day01 -v
 Starter code: [day02/day02.py](day02/day02.py)  
 Tests: [day02/test_day02.py](day02/test_day02.py)  
 Notes: [day02/note_day02.md](day02/note_day02.md)
-
-Today's exercises cover integer-array indexing, boolean masks, conditional replacement without mutating the source, and paired row/column coordinates.
-
-Run from the repository root:
 
 ```bash
 python3.14 -m unittest week03_numpy.day02.test_day02 -v
@@ -56,12 +50,22 @@ Starter code: [day03/day03.py](day03/day03.py)
 Tests: [day03/test_day03.py](day03/test_day03.py)  
 Notes: [day03/note_day03.md](day03/note_day03.md)
 
-Today's exercises cover feature-wise bias addition, row-wise scaling, feature standardization, and vectorized ReLU. Pay close attention to shapes such as `(n_samples, n_features)`, `(n_features,)`, and `(n_rows, 1)`.
+```bash
+python3.14 -m unittest week03_numpy.day03.test_day03 -v
+```
+
+## Day 4 — Reduction Axes, keepdims, and Precision
+
+Starter code: [day04/day04.py](day04/day04.py)  
+Tests: [day04/test_day04.py](day04/test_day04.py)  
+Notes: [day04/note_day04.md](day04/note_day04.md)
+
+Today's exercises cover summation over axes, optional dimension retention, feature-wise means, feature centering, and mean absolute error. The reduction tasks use float64 accumulation to make numerical precision an explicit part of the exercise.
 
 Run from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day03.test_day03 -v
+python3.14 -m unittest week03_numpy.day04.test_day04 -v
 ```
 
 The starter tests are expected to fail until you replace the TODOs.
@@ -73,7 +77,7 @@ Create a task branch from the latest `main`, for example:
 ```bash
 git switch main
 git pull
-git switch -c feature/week03-day03-broadcasting
+git switch -c feature/week03-day04-reductions
 ```
 
 When your work is ready:
@@ -83,8 +87,8 @@ git status
 git diff
 git add week03_numpy
 git diff --cached
-git commit -m "Complete Week 03 Day 03 broadcasting exercises"
-git push -u origin feature/week03-day03-broadcasting
+git commit -m "Complete Week 03 Day 04 reduction exercises"
+git push -u origin feature/week03-day04-reductions
 ```
 
 Open a Pull Request into `main` after the tests pass.
@@ -115,3 +119,13 @@ Open a Pull Request into `main` after the tests pass.
 - [ ] Apply ReLU without explicit Python loops.
 - [ ] Pass all Day 3 tests.
 - [ ] Complete [note_day03.md](day03/note_day03.md).
+
+## Definition of Done for Day 4
+
+- [ ] Predict output shapes for axis reductions with and without `keepdims`.
+- [ ] Compute per-feature means across samples.
+- [ ] Center every feature using broadcasting and `keepdims=True`.
+- [ ] Explain why float64 accumulation can improve some reductions.
+- [ ] Compute mean absolute error while preserving input arrays.
+- [ ] Pass all Day 4 tests.
+- [ ] Complete [note_day04.md](day04/note_day04.md).
