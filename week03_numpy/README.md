@@ -2,7 +2,7 @@
 
 ## Goal
 
-Use NumPy beyond basic syntax. Focus on array memory behavior, indexing, shape reasoning, vectorized operations, reductions, and batched matrix multiplication. These ideas prepare for PyTorch tensors in Week 04.
+Use NumPy beyond basic syntax. Focus on array memory behavior, indexing, broadcasting, vectorized operations, reductions, and batched matrix multiplication. These ideas prepare for PyTorch tensors in Week 04.
 
 ## Seven-Day Plan
 
@@ -50,6 +50,20 @@ Run from the repository root:
 python3.14 -m unittest week03_numpy.day02.test_day02 -v
 ```
 
+## Day 3 — Broadcasting and Vectorization
+
+Starter code: [day03/day03.py](day03/day03.py)  
+Tests: [day03/test_day03.py](day03/test_day03.py)  
+Notes: [day03/note_day03.md](day03/note_day03.md)
+
+Today's exercises cover feature-wise bias addition, row-wise scaling, feature standardization, and vectorized ReLU. Pay close attention to shapes such as `(n_samples, n_features)`, `(n_features,)`, and `(n_rows, 1)`.
+
+Run from the repository root:
+
+```bash
+python3.14 -m unittest week03_numpy.day03.test_day03 -v
+```
+
 The starter tests are expected to fail until you replace the TODOs.
 
 ## Git Workflow
@@ -59,7 +73,7 @@ Create a task branch from the latest `main`, for example:
 ```bash
 git switch main
 git pull
-git switch -c feature/week03-day02-indexing
+git switch -c feature/week03-day03-broadcasting
 ```
 
 When your work is ready:
@@ -69,8 +83,8 @@ git status
 git diff
 git add week03_numpy
 git diff --cached
-git commit -m "Complete Week 03 Day 02 NumPy indexing exercises"
-git push -u origin feature/week03-day02-indexing
+git commit -m "Complete Week 03 Day 03 broadcasting exercises"
+git push -u origin feature/week03-day03-broadcasting
 ```
 
 Open a Pull Request into `main` after the tests pass.
@@ -92,3 +106,12 @@ Open a Pull Request into `main` after the tests pass.
 - [ ] Select paired matrix coordinates using row and column index arrays.
 - [ ] Pass all Day 2 tests.
 - [ ] Complete [note_day02.md](day02/note_day02.md).
+
+## Definition of Done for Day 3
+
+- [ ] Explain why a vector with shape `(n_features,)` broadcasts over a batch matrix.
+- [ ] Scale rows by adding a singleton axis to the row-scale vector.
+- [ ] Standardize features using per-feature statistics.
+- [ ] Apply ReLU without explicit Python loops.
+- [ ] Pass all Day 3 tests.
+- [ ] Complete [note_day03.md](day03/note_day03.md).
