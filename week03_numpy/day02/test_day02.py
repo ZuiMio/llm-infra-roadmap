@@ -93,6 +93,14 @@ class TestReplaceAboveThreshold(unittest.TestCase):
 
 
 class TestSelectMatrixCoordinates(unittest.TestCase):
+    def test_rejects_non_integer_columns(self):
+        with self.assertRaises(ValueError):
+            select_matrix_coordinates(
+                self.matrix,
+                rows=[0, 2],
+                cols=[1.0, 0.0],
+            )
+
     def setUp(self):
         self.matrix = np.array([
             [10, 11, 12],

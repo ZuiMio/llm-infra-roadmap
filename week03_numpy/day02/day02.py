@@ -35,7 +35,12 @@ def select_by_indices(array, indices):
     - Raise ValueError for invalid dimensions or non-integer indices.
     """
     # TODO 1: Convert and validate the inputs, then select by integer indices.
-    raise NotImplementedError("Implement select_by_indices")
+    # raise NotImplementedError("Implement select_by_indices")
+    array = np.asarray(array)
+    indices = np.asarray(indices)
+    if array.ndim != 1 or indices.ndim !=1 or not np.issubdtype(indices.dtype, np.integer):
+        raise ValueError("invalid dimensions or non-integer indices.")
+    return array[indices].copy()
 
 
 def select_by_mask(array, mask):
@@ -51,7 +56,24 @@ def select_by_mask(array, mask):
     - Raise ValueError for an invalid array dimension, mask dtype, or shape.
     """
     # TODO 2: Convert and validate the inputs, then apply the boolean mask.
-    raise NotImplementedError("Implement select_by_mask")
+    # raise NotImplementedError("Implement select_by_mask")
+    arr = np.asarray(array)
+    msk = np.asarray(mask)
+    
+    # 1. 检查输入数组是否为一维
+    if arr.ndim != 1:
+        raise ValueError("The input array must be 1D.")
+        
+    # 2. 检查 mask 是否为布尔类型
+    if msk.dtype != bool:
+        raise ValueError("mask must contain booleans.")
+        
+    # 3. 检查形状是否一致
+    if arr.shape != msk.shape:
+        raise ValueError("mask must have the same shape as array.")
+        
+    # 4. 应用布尔索引并返回独立副本
+    return arr[msk].copy()
 
 
 def replace_above_threshold(array, threshold, replacement):
@@ -67,7 +89,16 @@ def replace_above_threshold(array, threshold, replacement):
     - Raise ValueError if array is not 1D.
     """
     # TODO 3: Copy the array first, then replace values using a boolean mask.
-    raise NotImplementedError("Implement replace_above_threshold")
+    # raise NotImplementedError("Implement replace_above_threshold")
+    array = np.asarray(array)
+    
+    if array.ndim != 1:
+        raise ValueError("Input array must be 1D.")
+    
+    # np.where(condition, x, y) 会在 condition 为 True 的地方取 x，False 的地方取 y
+    # 并且它会返回一个新的拷贝，不会突变原数组
+    return np.where(array > threshold, replacement, array)
+
 
 
 def select_matrix_coordinates(matrix, rows, cols):
@@ -83,7 +114,24 @@ def select_matrix_coordinates(matrix, rows, cols):
     - Raise ValueError for invalid dimensions, index dtypes, or lengths.
     """
     # TODO 4: Validate the inputs and select the paired coordinates.
-    raise NotImplementedError("Implement select_matrix_coordinates")
+    # raise NotImplementedError("Implement select_matrix_coordinates")
+    matrix = np.asarray(matrix)
+    rows = np.asarray(rows)
+    cols = np.asarray(cols)
+
+    if (
+        matrix.ndim != 2
+        or rows.ndim != 1
+        or cols.ndim != 1
+        or len(rows) != len(cols)
+        or not np.issubdtype(rows.dtype, np.integer)
+        or not np.issubdtype(cols.dtype, np.integer)
+    ):
+        raise ValueError(
+            "Invalid dimensions, index dtypes, or lengths."
+        )
+
+    return matrix[rows, cols].copy()
 
 
 if __name__ == "__main__":
