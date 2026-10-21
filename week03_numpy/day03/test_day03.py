@@ -13,6 +13,13 @@ from week03_numpy.day03.day03 import (
 
 
 class TestAddFeatureBias(unittest.TestCase):
+    def test_rejects_single_value_bias(self):
+        with self.assertRaises(ValueError):
+            add_feature_bias(
+                np.ones((2, 3)),
+                np.array([10]),
+            )
+
     def test_broadcasts_bias_over_batch(self):
         features = np.array([[1, 2, 3], [4, 5, 6]])
         bias = np.array([10, 20, 30])
@@ -71,6 +78,14 @@ class TestScaleRows(unittest.TestCase):
 
 
 class TestStandardizeFeatures(unittest.TestCase):
+    def test_rejects_non_2d_features(self):
+        with self.assertRaises(ValueError):
+            standardize_features(
+                np.array([1, 2, 3]),
+                np.array([0, 0, 0]),
+                np.array([1, 1, 1]),
+            )
+            
     def test_standardizes_each_feature_using_broadcasting(self):
         features = np.array([[1.0, 10.0], [3.0, 14.0]])
         original = features.copy()

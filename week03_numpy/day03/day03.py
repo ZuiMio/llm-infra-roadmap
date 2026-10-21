@@ -34,7 +34,21 @@ def add_feature_bias(features, bias):
     - Raise ValueError for invalid dimensions or a mismatched feature count.
     """
     # TODO 1: Validate the shapes and add bias through broadcasting.
-    raise NotImplementedError("Implement add_feature_bias")
+    # raise NotImplementedError("Implement add_feature_bias")
+    features = np.asarray(features)
+    bias = np.asarray(bias)
+
+    if features.ndim != 2 or bias.ndim != 1:
+        raise ValueError(
+            "features must be 2D and bias must be 1D."
+        )
+
+    if bias.shape[0] != features.shape[1]:
+        raise ValueError(
+            "The bias length must match the number of features."
+        )
+
+    return features + bias
 
 
 def scale_rows(matrix, row_scales):
@@ -50,7 +64,17 @@ def scale_rows(matrix, row_scales):
     - Raise ValueError for invalid dimensions or a mismatched row count.
     """
     # TODO 2: Reshape row_scales so it broadcasts down the rows.
-    raise NotImplementedError("Implement scale_rows")
+    # raise NotImplementedError("Implement scale_rows")
+    matrix = np.asarray(matrix)
+    row_scales = np.asarray(row_scales)
+    if (
+        matrix.ndim != 2 
+        or row_scales.ndim != 1
+        or row_scales.shape[0] != matrix.shape[0]
+    ):
+        raise ValueError("invalid dimensions or a mismatched row count.")
+    return matrix * row_scales[:, np.newaxis]
+
 
 
 def standardize_features(features, mean, std):
@@ -66,7 +90,28 @@ def standardize_features(features, mean, std):
     - Do not mutate any input; raise ValueError for invalid shapes or std.
     """
     # TODO 3: Validate shapes and standard deviations, then standardize.
-    raise NotImplementedError("Implement standardize_features")
+    # raise NotImplementedError("Implement standardize_features")
+    features = np.asarray(features)
+    mean = np.asarray(mean)
+    std = np.asarray(std)
+
+    if features.ndim != 2:
+        raise ValueError("features must be 2D.")
+
+    if mean.ndim != 1 or std.ndim != 1:
+        raise ValueError("mean and std must be 1D.")
+
+    n_features = features.shape[1]
+
+    if mean.shape[0] != n_features or std.shape[0] != n_features:
+        raise ValueError(
+            "mean and std must match the number of features."
+        )
+
+    if not np.all(std > 0):
+        raise ValueError("Every standard deviation must be positive.")
+
+    return (features - mean) / std
 
 
 def vectorized_relu(array):
@@ -80,7 +125,9 @@ def vectorized_relu(array):
     - Do not mutate the input.
     """
     # TODO 4: Use a NumPy element-wise operation rather than a Python loop.
-    raise NotImplementedError("Implement vectorized_relu")
+    # raise NotImplementedError("Implement vectorized_relu")
+    array = np.asarray(array)
+    return np.maximum(array, 0)
 
 
 if __name__ == "__main__":
