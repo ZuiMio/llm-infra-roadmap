@@ -28,17 +28,17 @@ Build the engineering fundamentals required to work toward:
 
 ### Current Focus — Week 3: NumPy and Tensor Thinking
 
-Day 3 focuses on broadcasting and vectorization: feature-wise bias addition, row-wise scaling, feature standardization, and ReLU.
+Day 4 focuses on reduction axes, `keepdims`, feature centering, and numerical precision.
 
 - [Week 3 learning guide](week03_numpy/README.md)
-- [Day 3 starter code](week03_numpy/day03/day03.py)
-- [Day 3 tests](week03_numpy/day03/test_day03.py)
-- [Day 3 notes](week03_numpy/day03/note_day03.md)
+- [Day 4 starter code](week03_numpy/day04/day04.py)
+- [Day 4 tests](week03_numpy/day04/test_day04.py)
+- [Day 4 notes](week03_numpy/day04/note_day04.md)
 
-Run the Day 3 tests from the repository root:
+Run the Day 4 tests from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day03.test_day03 -v
+python3.14 -m unittest week03_numpy.day04.test_day04 -v
 ```
 
 ## Roadmap
