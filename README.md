@@ -28,17 +28,17 @@ Build the engineering fundamentals required to work toward:
 
 ### Current Focus — Week 3: NumPy and Tensor Thinking
 
-Day 4 focuses on reduction axes, `keepdims`, feature centering, and numerical precision.
+Day 5 focuses on matrix multiplication, batch dimensions, and shape contracts for a simple linear layer.
 
 - [Week 3 learning guide](week03_numpy/README.md)
-- [Day 4 starter code](week03_numpy/day04/day04.py)
-- [Day 4 tests](week03_numpy/day04/test_day04.py)
-- [Day 4 notes](week03_numpy/day04/note_day04.md)
+- [Day 5 starter code](week03_numpy/day05/day05.py)
+- [Day 5 tests](week03_numpy/day05/test_day05.py)
+- [Day 5 notes](week03_numpy/day05/note_day05.md)
 
-Run the Day 4 tests from the repository root:
+Run the Day 5 tests from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day04.test_day04 -v
+python3.14 -m unittest week03_numpy.day05.test_day05 -v
 ```
 
 ## Roadmap
