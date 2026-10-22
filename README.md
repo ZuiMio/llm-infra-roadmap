@@ -28,17 +28,17 @@ Build the engineering fundamentals required to work toward:
 
 ### Current Focus — Week 3: NumPy and Tensor Thinking
 
-Day 5 focuses on matrix multiplication, batch dimensions, and shape contracts for a simple linear layer.
+Day 6 focuses on feature validation, per-feature statistics, normalization, and a reusable preprocessing pipeline.
 
 - [Week 3 learning guide](week03_numpy/README.md)
-- [Day 5 starter code](week03_numpy/day05/day05.py)
-- [Day 5 tests](week03_numpy/day05/test_day05.py)
-- [Day 5 notes](week03_numpy/day05/note_day05.md)
+- [Day 6 starter code](week03_numpy/day06/day06.py)
+- [Day 6 tests](week03_numpy/day06/test_day06.py)
+- [Day 6 notes](week03_numpy/day06/note_day06.md)
 
-Run the Day 5 tests from the repository root:
+Run the Day 6 tests from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day05.test_day05 -v
+python3.14 -m unittest week03_numpy.day06.test_day06 -v
 ```
 
 ## Roadmap
