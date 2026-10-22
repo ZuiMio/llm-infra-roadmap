@@ -15,6 +15,26 @@
 - `git commit -m "..."`：将暂存区的改动正式提交到本地仓库，并附带注释信息。
 - `git push origin main`：将本地仓库的提交推送到远端主分支（如 GitHub）。
 
+创建自己的开发分支
+
+- `git fetch origin`
+- `git switch -c feature/ --track origin/feature/`
+- **`git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。**
+- `git branch --show-current`
+
+如果要删除已经合并的本地开发分支，可以先执行：
+
+- `git switch main`
+- `git pull origin main`
+- `git merge feature`
+- `git branch --merged`
+
+确认 feature/day04-git-workflow 已合并后，再执行：
+
+- `git branch -d feature/day04-git-workflow`
+- `git push origin -d feature`
+
+---
 
 2. Exercise A：检查仓库状态
 - `pwd`：当前终端所在的目录。
@@ -87,8 +107,8 @@ EOF`
 
 3. Exercise B：创建自己的开发分支
 - `git fetch origin`
-- **`git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。**
 - `git switch -c feature/ --track origin/feature/`
+- **`git switch -c feature/day04-git-workflow` 这个命令会创建分支并立即切换过去。**
 - `git branch --show-current`
 - `git status`
 
@@ -112,13 +132,16 @@ EOF`
 - `git log --oneline -5`
 - `git status`
 
-如果要删除已经合并的本地开发分支，可以先执行：
+7. 如果要删除已经合并的本地开发分支，可以先执行：
+- `git switch main`
+- `git pull origin main`
+- `git merge feature`
 - `git branch --merged`
 
 确认 feature/day04-git-workflow 已合并后，再执行：
 
 - `git branch -d feature/day04-git-workflow`
-- `git push origin --delete feature`
+- `git push origin -d feature`
 
 
 7. 今天还必须理解的两个命令
