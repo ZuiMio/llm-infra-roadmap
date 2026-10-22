@@ -100,6 +100,21 @@ python3.14 -m unittest week03_numpy.day06.test_day06 -v
 
 The Day 6 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
 
+
+## Day 7 — Mini Project: Batch-Feature Pipeline
+
+Starter code: [day07/day07.py](day07/day07.py)  
+Tests: [day07/test_day07.py](day07/test_day07.py)  
+Notes: [day07/note_day07.md](day07/note_day07.md)
+
+Integrate Day 5 matrix multiplication and Day 6 feature preprocessing into one pipeline. Fit statistics on training data, reuse those statistics for new data, compute a linear forward pass, and process inference rows in batches. The batch output must match processing all rows at once.
+
+~~~bash
+python3.14 -m unittest week03_numpy.day07.test_day07 -v
+~~~
+
+The Day 7 starter functions contain TODOs, so the tests are expected to fail until the implementation is complete.
+
 ## Git Workflow — Direct Commits to main
 
 For this personal learning repository, work directly on `main`; do not create a feature branch or Pull Request for daily exercises.
@@ -112,7 +127,7 @@ git pull origin main
 # Edit and test your files.
 git status
 git diff
-git add week03_numpy/day06
+git add week03_numpy/day07 week03_numpy/README.md README.md
 git diff --cached
 git commit -m "Complete Week 03 Day 06 preprocessing exercises"
 git push origin main
@@ -178,3 +193,14 @@ Review the diff before committing, and run the day's tests before considering th
 - [ ] Build the end-to-end preprocessing function and preserve inputs.
 - [ ] Pass all Day 6 tests.
 - [ ] Complete [note_day06.md](day06/note_day06.md).
+
+## Definition of Done for Day 7
+
+- [ ] Fit feature-wise training statistics using population standard deviation.
+- [ ] Transform another dataset with the same training statistics.
+- [ ] Validate shapes and values for a linear forward pass.
+- [ ] Process inference data in batches and preserve row order.
+- [ ] Show that batched and full-matrix outputs match.
+- [ ] Preserve all input arrays.
+- [ ] Pass all Day 7 tests.
+- [ ] Record a bug and its cause in [note_day07.md](day07/note_day07.md).
