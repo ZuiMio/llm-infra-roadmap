@@ -38,7 +38,7 @@ python3.14 -m unittest week03_numpy.day01.test_day01 -v
 
 Starter code: [day02/day02.py](day02/day02.py)  
 Tests: [day02/test_day02.py](day02/test_day02.py)  
-Notes: [day02/note_day02.md](day02/note_day02.md)
+Notes: [note_day02.md](day02/note_day02.md)
 
 ```bash
 python3.14 -m unittest week03_numpy.day02.test_day02 -v
@@ -48,7 +48,7 @@ python3.14 -m unittest week03_numpy.day02.test_day02 -v
 
 Starter code: [day03/day03.py](day03/day03.py)  
 Tests: [day03/test_day03.py](day03/test_day03.py)  
-Notes: [day03/note_day03.md](day03/note_day03.md)
+Notes: [note_day03.md](day03/note_day03.md)
 
 ```bash
 python3.14 -m unittest week03_numpy.day03.test_day03 -v
@@ -58,7 +58,7 @@ python3.14 -m unittest week03_numpy.day03.test_day03 -v
 
 Starter code: [day04/day04.py](day04/day04.py)  
 Tests: [day04/test_day04.py](day04/test_day04.py)  
-Notes: [day04/note_day04.md](day04/note_day04.md)
+Notes: [note_day04.md](day04/note_day04.md)
 
 Today's exercises cover summation over axes, optional dimension retention, feature-wise means, feature centering, and mean absolute error. The reduction tasks use float64 accumulation to make numerical precision an explicit part of the exercise.
 
@@ -68,30 +68,41 @@ Run from the repository root:
 python3.14 -m unittest week03_numpy.day04.test_day04 -v
 ```
 
-The starter tests are expected to fail until you replace the TODOs.
+## Day 5 — Matrix Multiplication and Batch Dimensions
 
-## Git Workflow
+Starter code: [day05/day05.py](day05/day05.py)  
+Tests: [day05/test_day05.py](day05/test_day05.py)  
+Notes: [day05/note_day05.md](day05/note_day05.md)
 
-Create a task branch from the latest `main`, for example:
+Today's exercises cover the difference between `*` and `@`, inner matrix dimensions, broadcast-compatible batch dimensions, and the forward pass of a linear layer.
+
+Run from the repository root:
+
+```bash
+python3.14 -m unittest week03_numpy.day05.test_day05 -v
+```
+
+The Day 5 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
+
+## Git Workflow — Direct Commits to main
+
+For this personal learning repository, work directly on `main`; do not create a feature branch or Pull Request for daily exercises.
+
+From the repository root:
 
 ```bash
 git switch main
-git pull
-git switch -c feature/week03-day04-reductions
-```
-
-When your work is ready:
-
-```bash
+git pull origin main
+# Edit and test your files.
 git status
 git diff
-git add week03_numpy
+git add week03_numpy/day05
 git diff --cached
-git commit -m "Complete Week 03 Day 04 reduction exercises"
-git push -u origin feature/week03-day04-reductions
+git commit -m "Complete Week 03 Day 05 matrix multiplication exercises"
+git push origin main
 ```
 
-Open a Pull Request into `main` after the tests pass.
+Review the diff before committing, and run the day's tests before considering the work complete.
 
 ## Definition of Done for Day 1
 
@@ -129,3 +140,14 @@ Open a Pull Request into `main` after the tests pass.
 - [ ] Compute mean absolute error while preserving input arrays.
 - [ ] Pass all Day 4 tests.
 - [ ] Complete [note_day04.md](day04/note_day04.md).
+
+## Definition of Done for Day 5
+
+- [ ] Explain the difference between element-wise multiplication and matrix multiplication.
+- [ ] Predict output shapes and validate inner matrix dimensions.
+- [ ] Implement matrix multiplication for two 2D arrays.
+- [ ] Implement batched matrix multiplication with compatible batch broadcasting.
+- [ ] Implement a linear layer forward pass using `inputs @ weights + bias`.
+- [ ] Check invalid dimensions and shape mismatches with `ValueError`.
+- [ ] Pass all Day 5 tests without mutating inputs.
+- [ ] Complete [note_day05.md](day05/note_day05.md).
