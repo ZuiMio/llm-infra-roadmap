@@ -36,7 +36,16 @@ def sum_array(array, axis=None, keepdims=False):
     - Do not mutate the input array.
     """
     # TODO 1: Validate dimensions and axis, then call np.sum.
-    raise NotImplementedError("Implement sum_array")
+    # raise NotImplementedError("Implement sum_array")
+    array = np.asarray(array)
+    if array.ndim < 1:
+        raise ValueError("array requires at least one dimension.")
+        
+    if axis is not None:
+        if isinstance(axis, bool) or not isinstance(axis, (int, np.integer)):
+            raise ValueError("axis must be None or valid integer axis.")
+            
+    return np.sum(array, axis=axis, dtype=np.float64, keepdims=keepdims)
 
 
 def mean_features(features, keepdims=False):
@@ -53,7 +62,11 @@ def mean_features(features, keepdims=False):
     - Do not mutate the input array.
     """
     # TODO 2: Validate the input and compute a feature-wise mean.
-    raise NotImplementedError("Implement mean_features")
+    # raise NotImplementedError("Implement mean_features")
+    features = np.asarray(features)
+    if features.ndim != 2 or features.size == 0:
+        raise ValueError("features must be a non-empty 2D array.")
+    return np.mean(features, axis=0, dtype=np.float64, keepdims=keepdims)
 
 
 def center_features(features):
@@ -69,7 +82,12 @@ def center_features(features):
     - Do not mutate the input.
     """
     # TODO 3: Compute means with keepdims, then subtract them by broadcasting.
-    raise NotImplementedError("Implement center_features")
+    # raise NotImplementedError("Implement center_features")
+    features = np.asarray(features, dtype=np.float64)
+    if features.ndim != 2 or features.size == 0:
+        raise ValueError("features must be a non-empty 2D array.")
+    return features - np.mean(features, axis=0, dtype=np.float64, keepdims=True)
+
 
 
 def mean_absolute_error(predictions, targets):
@@ -85,7 +103,17 @@ def mean_absolute_error(predictions, targets):
     - Raise ValueError for mismatched shapes or empty input.
     """
     # TODO 4: Validate shapes and size, then compute the mean absolute error.
-    raise NotImplementedError("Implement mean_absolute_error")
+    # raise NotImplementedError("Implement mean_absolute_error")
+    predictions = np.asarray(predictions, dtype=np.float64)
+    targets = np.asarray(targets, dtype=np.float64)
+
+    if predictions.shape != targets.shape or predictions.size == 0:
+        raise ValueError(
+            "predictions and targets must have identical, non-empty shapes."
+        )
+
+    errors = np.abs(predictions - targets)
+    return float(np.mean(errors, dtype=np.float64))
 
 
 if __name__ == "__main__":

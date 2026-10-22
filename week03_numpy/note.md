@@ -1,7 +1,7 @@
 # Week 03 — Day 01 Notes
 
-- source week02_system/day05/.venv/bin/activate
-- python3.14 -m unittest week03_numpy.day03.test_day03 -v
+- `source week02_system/day05/.venv/bin/activate`
+- `python3.14 -m unittest week03_numpy.day03.test_day03 -v`
 
 ## Predictions Before Running
 

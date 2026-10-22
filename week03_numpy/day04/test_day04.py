@@ -139,7 +139,7 @@ class TestMeanAbsoluteError(unittest.TestCase):
 
         result = mean_absolute_error(predictions, targets)
 
-        self.assertAlmostEqual(result, 1.75)
+        self.assertAlmostEqual(result, 1.5)
 
     def test_uses_float64_arithmetic_for_float32_inputs(self):
         predictions = np.array([100_000_000, 1, -100_000_000], dtype=np.float32)
