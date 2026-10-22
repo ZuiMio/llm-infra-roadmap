@@ -28,18 +28,21 @@ Build the engineering fundamentals required to work toward:
 
 ### Current Focus — Week 3: NumPy and Tensor Thinking
 
-Day 6 focuses on feature validation, per-feature statistics, normalization, and a reusable preprocessing pipeline.
+Day 7 combines feature preprocessing with linear inference performed in batches. It completes the NumPy week before moving to PyTorch in Week 4.
 
 - [Week 3 learning guide](week03_numpy/README.md)
-- [Day 6 starter code](week03_numpy/day06/day06.py)
-- [Day 6 tests](week03_numpy/day06/test_day06.py)
-- [Day 6 notes](week03_numpy/day06/note_day06.md)
+- [Day 7 starter code](week03_numpy/day07/day07.py)
+- [Day 7 tests](week03_numpy/day07/test_day07.py)
+- [Day 7 notes](week03_numpy/day07/note_day07.md)
 
-Run the Day 6 tests from the repository root:
+Run the Day 7 tests from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day06.test_day06 -v
+python3.14 -m unittest week03_numpy.day07.test_day07 -v
 ```
+
+
+The Day 7 starter functions contain TODOs, so the tests are expected to fail until the implementation is complete.
 
 ## Roadmap
 
