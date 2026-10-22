@@ -2,7 +2,7 @@
 
 ## Goal
 
-Use NumPy beyond basic syntax. Focus on array memory behavior, indexing, broadcasting, vectorized operations, reductions, and batched matrix multiplication. These ideas prepare for PyTorch tensors in Week 04.
+Use NumPy beyond basic syntax. Focus on array memory behavior, indexing, broadcasting, vectorized operations, reductions, batched matrix multiplication, and preprocessing. These ideas prepare for PyTorch tensors in Week 04.
 
 ## Seven-Day Plan
 
@@ -48,7 +48,7 @@ python3.14 -m unittest week03_numpy.day02.test_day02 -v
 
 Starter code: [day03/day03.py](day03/day03.py)  
 Tests: [day03/test_day03.py](day03/test_day03.py)  
-Notes: [note_day03.md](day03/note_day03.md)
+Notes: [day03/note_day03.md](day03/note_day03.md)
 
 ```bash
 python3.14 -m unittest week03_numpy.day03.test_day03 -v
@@ -58,7 +58,7 @@ python3.14 -m unittest week03_numpy.day03.test_day03 -v
 
 Starter code: [day04/day04.py](day04/day04.py)  
 Tests: [day04/test_day04.py](day04/test_day04.py)  
-Notes: [note_day04.md](day04/note_day04.md)
+Notes: [day04/note_day04.md](day04/note_day04.md)
 
 Today's exercises cover summation over axes, optional dimension retention, feature-wise means, feature centering, and mean absolute error. The reduction tasks use float64 accumulation to make numerical precision an explicit part of the exercise.
 
@@ -84,6 +84,22 @@ python3.14 -m unittest week03_numpy.day05.test_day05 -v
 
 The Day 5 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
 
+## Day 6 — Feature Validation and Preprocessing
+
+Starter code: [day06/day06.py](day06/day06.py)  
+Tests: [day06/test_day06.py](day06/test_day06.py)  
+Notes: [day06/note_day06.md](day06/note_day06.md)
+
+Today's exercises cover numeric and finite-value validation, feature-wise means and population standard deviations, normalization with broadcasting, and handling constant-valued features without division by zero.
+
+Run from the repository root:
+
+```bash
+python3.14 -m unittest week03_numpy.day06.test_day06 -v
+```
+
+The Day 6 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
+
 ## Git Workflow — Direct Commits to main
 
 For this personal learning repository, work directly on `main`; do not create a feature branch or Pull Request for daily exercises.
@@ -96,9 +112,9 @@ git pull origin main
 # Edit and test your files.
 git status
 git diff
-git add week03_numpy/day05
+git add week03_numpy/day06
 git diff --cached
-git commit -m "Complete Week 03 Day 05 matrix multiplication exercises"
+git commit -m "Complete Week 03 Day 06 preprocessing exercises"
 git push origin main
 ```
 
@@ -151,3 +167,14 @@ Review the diff before committing, and run the day's tests before considering th
 - [ ] Check invalid dimensions and shape mismatches with `ValueError`.
 - [ ] Pass all Day 5 tests without mutating inputs.
 - [ ] Complete [note_day05.md](day05/note_day05.md).
+
+## Definition of Done for Day 6
+
+- [ ] Validate non-empty 2D real-valued feature matrices and reject NaN/inf.
+- [ ] Check expected feature count when provided.
+- [ ] Compute per-feature means and population standard deviations.
+- [ ] Normalize with broadcasting and reuse supplied training statistics.
+- [ ] Handle zero-standard-deviation features without division by zero.
+- [ ] Build the end-to-end preprocessing function and preserve inputs.
+- [ ] Pass all Day 6 tests.
+- [ ] Complete [note_day06.md](day06/note_day06.md).
