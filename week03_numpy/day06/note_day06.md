@@ -1,5 +1,7 @@
 # Day 6 — Feature Validation and Preprocessing
 
+python3.14 -m unittest week03_numpy.day06.test_day06 -v
+
 ## Learning goals
 
 - Validate input data before doing numerical calculations.

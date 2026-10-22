@@ -119,7 +119,10 @@ class TestNormalizeFeatures(unittest.TestCase):
 
         self.assertTrue(np.isfinite(result).all())
         np.testing.assert_allclose(result[:, 1], [0.0, 0.0, 0.0])
-        np.testing.assert_allclose(result[:, 0], [-1.0, 0.0, 1.0])
+        np.testing.assert_allclose(
+            result[:, 0],
+            [-np.sqrt(3.0 / 2.0), 0.0, np.sqrt(3.0 / 2.0)],
+        )
 
     def test_zero_std_preserves_deviation_in_new_data(self):
         new_features = np.array([[7.0, 8.0]])
