@@ -129,7 +129,7 @@ git status
 git diff
 git add week03_numpy/day07 week03_numpy/README.md README.md
 git diff --cached
-git commit -m "Complete Week 03 Day 06 preprocessing exercises"
+git commit -m "Complete Week 03 Day 07 batch pipeline project"
 git push origin main
 ```
 
