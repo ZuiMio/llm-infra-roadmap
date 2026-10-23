@@ -22,80 +22,169 @@ Run from the repository root:
 import numpy as np
 
 
-def fit_standardizer(train_features):
-    """
-    Fit feature-wise means and population standard deviations on training data.
+# ---------- Shared validation helpers ----------
 
-    Requirements:
-    - Accept array-like input and convert it to a float64 NumPy array.
-    - Require a non-empty 2D matrix of real numeric values.
-    - Reject strings, booleans, complex values, NaN, and infinity.
-    - Return (mean, std), each with shape (n_features,).
-    - Compute statistics across samples (axis=0) using ddof=0.
-    - Do not mutate the input.
-    - Raise ValueError for invalid input or non-finite computed statistics.
-    """
-    # TODO 1: Validate the training matrix, then fit one mean and std per feature.
-    raise NotImplementedError("Implement fit_standardizer")
+def _is_real_numeric_dtype(dtype):
+    """Return whether dtype is an integer or floating-point type."""
+    return (
+        np.issubdtype(dtype, np.integer)
+        or np.issubdtype(dtype, np.floating)
+    )
+
+
+def _require_finite(array, name):
+    """Reject NaN and infinity."""
+    if not np.isfinite(array).all():
+        raise ValueError(f"{name} must contain only finite values.")
+    return array
+
+
+def _as_float64_array(values, name, ndim):
+    """Convert valid, non-empty real numeric data to float64."""
+    try:
+        array = np.asarray(values)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            f"{name} must be a valid array-like object."
+        ) from exc
+
+    if array.ndim != ndim:
+        raise ValueError(f"{name} must be a {ndim}D array.")
+
+    if array.size == 0:
+        raise ValueError(f"{name} must not be empty.")
+
+    if not _is_real_numeric_dtype(array.dtype):
+        raise ValueError(f"{name} must contain real numeric values.")
+
+    with np.errstate(over="ignore", invalid="ignore"):
+        array = np.asarray(array, dtype=np.float64)
+
+    return _require_finite(array, name)
+
+
+def _validate_feature_statistics(features, mean, std):
+    """Validate feature statistic shapes and standard deviation values."""
+    expected_shape = (features.shape[1],)
+
+    if mean.shape != expected_shape or std.shape != expected_shape:
+        raise ValueError(
+            "The lengths of mean and std must match the number of features."
+        )
+
+    if np.any(std < 0):
+        raise ValueError("std must contain non-negative values.")
+
+
+def _validate_linear_shapes(inputs, weights, bias):
+    """Validate the shape contract for a linear layer."""
+    if inputs.shape[1] != weights.shape[0]:
+        raise ValueError(
+            "Input feature count must match the weight input dimension."
+        )
+
+    if bias.shape != (weights.shape[1],):
+        raise ValueError(
+            "Bias length must match the output feature count."
+        )
+
+
+# ---------- Shared computation helpers ----------
+
+def _normalize_validated(features, mean, std):
+    """Normalize already-validated arrays using broadcasting."""
+    safe_std = np.where(std == 0.0, 1.0, std)
+
+    with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+        normalized = (features - mean) / safe_std
+
+    return _require_finite(normalized, "normalized features")
+
+
+def _linear_forward_validated(inputs, weights, bias):
+    """Compute a linear forward pass on already-validated arrays."""
+    with np.errstate(over="ignore", invalid="ignore"):
+        output = inputs @ weights + bias
+
+    return _require_finite(output, "linear output")
+
+
+# ---------- Public functions ----------
+
+def fit_standardizer(train_features):
+    """Fit per-feature means and population standard deviations."""
+    features = _as_float64_array(
+        train_features, "train_features", ndim=2
+    )
+
+    with np.errstate(over="ignore", invalid="ignore"):
+        mean = np.mean(features, axis=0, dtype=np.float64)
+        std = np.std(features, axis=0, dtype=np.float64, ddof=0)
+
+    _require_finite(mean, "computed mean")
+    _require_finite(std, "computed standard deviation")
+
+    return mean, std
 
 
 def transform_features(features, mean, std):
-    """
-    Standardize a feature matrix using previously fitted statistics.
+    """Normalize features with previously fitted statistics."""
+    features = _as_float64_array(features, "features", ndim=2)
+    mean = _as_float64_array(mean, "mean", ndim=1)
+    std = _as_float64_array(std, "std", ndim=1)
 
-    Requirements:
-    - Require a non-empty 2D real-valued finite feature matrix.
-    - mean and std must be finite, real-valued 1D arrays of length n_features.
-    - Reject strings, booleans, complex values, NaN, and infinity.
-    - Standard deviations must be non-negative; zero is allowed.
-    - Compute (features - mean) / std using NumPy broadcasting.
-    - Replace zero standard deviations with a denominator of 1.0.
-    - Return float64 without mutating any input.
-    - Raise ValueError for invalid input or non-finite output.
-    """
-    # TODO 2: Validate data and statistics, then normalize by broadcasting.
-    raise NotImplementedError("Implement transform_features")
+    _validate_feature_statistics(features, mean, std)
+
+    return _normalize_validated(features, mean, std)
 
 
 def linear_forward(inputs, weights, bias):
-    """
-    Compute a linear layer forward pass for a 2D batch of inputs.
+    """Compute inputs @ weights + bias."""
+    inputs = _as_float64_array(inputs, "inputs", ndim=2)
+    weights = _as_float64_array(weights, "weights", ndim=2)
+    bias = _as_float64_array(bias, "bias", ndim=1)
 
-    Requirements:
-    - inputs must be a non-empty 2D real-valued finite matrix.
-    - weights must be a non-empty 2D real-valued finite matrix.
-    - bias must be a 1D real-valued finite array.
-    - weights has shape (in_features, out_features).
-    - bias has shape (out_features,).
-    - inputs.shape[1] must equal weights.shape[0].
-    - Return inputs @ weights + bias as float64.
-    - Do not mutate inputs, weights, or bias.
-    - Raise ValueError for invalid dimensions, mismatched shapes, or invalid values.
-    """
-    # TODO 3: Validate shapes and values, then compute the linear forward pass.
-    raise NotImplementedError("Implement linear_forward")
+    _validate_linear_shapes(inputs, weights, bias)
+
+    return _linear_forward_validated(inputs, weights, bias)
 
 
 def predict_in_batches(features, mean, std, weights, bias, batch_size):
-    """
-    Transform features and compute linear outputs in row batches.
+    """Normalize features and compute linear outputs in row batches."""
+    if (
+        isinstance(batch_size, (bool, np.bool_))
+        or not isinstance(batch_size, (int, np.integer))
+        or batch_size <= 0
+    ):
+        raise ValueError("batch_size must be a positive integer.")
 
-    The supplied mean and std must have been fitted on training data. Do not
-    recalculate them from features inside this function.
+    # Validate all inputs once.
+    features = _as_float64_array(features, "features", ndim=2)
+    mean = _as_float64_array(mean, "mean", ndim=1)
+    std = _as_float64_array(std, "std", ndim=1)
+    weights = _as_float64_array(weights, "weights", ndim=2)
+    bias = _as_float64_array(bias, "bias", ndim=1)
 
-    Requirements:
-    - Validate features, fitted statistics, weights, bias, and batch_size.
-    - batch_size must be a positive integer; reject booleans.
-    - Normalize each batch with transform_features-equivalent behavior.
-    - Compute each batch's outputs with linear_forward-equivalent behavior.
-    - Concatenate results in the original row order.
-    - Return a 2D float64 array with shape (n_samples, out_features).
-    - Support a final batch smaller than batch_size and batch_size > n_samples.
-    - Do not mutate any input.
-    - Raise ValueError for invalid inputs or incompatible dimensions.
-    """
-    # TODO 4: Validate once, process row slices, and concatenate batch outputs.
-    raise NotImplementedError("Implement predict_in_batches")
+    # Validate relationships between inputs.
+    _validate_feature_statistics(features, mean, std)
+    _validate_linear_shapes(features, weights, bias)
+
+    batch_outputs = []
+    batch_size = int(batch_size)
+
+    for start in range(0, features.shape[0], batch_size):
+        feature_batch = features[start:start + batch_size]
+
+        normalized_batch = _normalize_validated(
+            feature_batch, mean, std
+        )
+        output_batch = _linear_forward_validated(
+            normalized_batch, weights, bias
+        )
+
+        batch_outputs.append(output_batch)
+
+    return np.concatenate(batch_outputs, axis=0)
 
 
 if __name__ == "__main__":
@@ -104,12 +193,14 @@ if __name__ == "__main__":
         [3.0, 14.0, 5.0],
         [5.0, 18.0, 5.0],
     ])
+
     new_features = np.array([
         [2.0, 12.0, 5.0],
         [4.0, 16.0, 5.0],
         [6.0, 20.0, 5.0],
         [8.0, 24.0, 5.0],
     ])
+
     weights = np.array([
         [1.0, -1.0],
         [0.5, 2.0],
@@ -118,6 +209,7 @@ if __name__ == "__main__":
     bias = np.array([0.1, -0.2])
 
     mean, std = fit_standardizer(train_features)
+
     predictions = predict_in_batches(
         new_features, mean, std, weights, bias, batch_size=2
     )
