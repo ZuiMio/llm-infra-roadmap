@@ -53,7 +53,7 @@ Notes and questions: [day01/note_day01.md](day01/note_day01.md)
 Run from the repository root:
 
 ~~~bash
-python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+python -m unittest week04_pytorch.day01.test_day01 -v
 ~~~
 
 The starter functions intentionally raise NotImplementedError. Implement one function at a time, and rerun the tests after each function.
@@ -112,7 +112,7 @@ This personal learning repository uses direct commits to main for daily exercise
 ~~~bash
 git switch main
 git pull origin main
-python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+python -m unittest week04_pytorch.day01.test_day01 -v
 git status
 git diff
 ~~~
