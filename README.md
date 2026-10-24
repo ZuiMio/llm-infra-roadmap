@@ -26,7 +26,7 @@ The 12-week plan schedules Week 4 for 2026-10-27 to 2026-11-02. Study is startin
 Run Day 1 tests from the repository root:
 
 ~~~bash
-python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+python -m unittest week04_pytorch.day01.test_day01 -v
 ~~~
 
 The Day 1 starter functions intentionally contain TODOs, so tests will fail until you implement them. Start with the scalar example x = 3, y = x squared, then move to a hand-written linear forward pass and mean-squared-error loss. The Week 3 materials remain available for review.
