@@ -19,6 +19,31 @@ Understand how PyTorch builds a computation graph during the forward pass and us
 
 This is a practical day-by-day breakdown added to the 12-week plan. The source plan's required Week 04 deliverables remain the authority.
 
+
+## Multi-Machine Environment Strategy
+
+Use the same Git repository on each machine, but create a separate Python virtual environment on each OS. Never copy a `.venv` directory from one machine to another.
+
+- **Mac:** run correctness tests on CPU first. MPS is an optional follow-up if the installed PyTorch build and Mac support it.
+- **Remote Linux:** use CPU for correctness tests; use CUDA when a supported NVIDIA GPU and compatible PyTorch installation are available.
+- **Windows + NVIDIA:** this is a useful local CUDA environment. Select the matching Windows / Pip / Python / CUDA option on the official [PyTorch installer page](https://pytorch.org/get-started/locally/) rather than copying an old install command.
+
+Today's unit tests intentionally use CPU tensors. Keep them device-independent so test results are comparable across machines. GPU-specific experiments can be added as separate optional checks.
+
+Check the installed environment:
+
+~~~bash
+python -c "import torch; print('PyTorch:', torch.__version__); print('CUDA available:', torch.cuda.is_available()); print('CUDA build:', torch.version.cuda)"
+~~~
+
+On macOS, check MPS separately:
+
+~~~bash
+python -c "import torch; print('MPS available:', torch.backends.mps.is_available())"
+~~~
+
+For the standard Week 04 exercises, GPU availability is not a prerequisite. Move work to CUDA or MPS only in a later optional experiment after the CPU tests pass.
+
 ## Day 1 — Start Here
 
 Starter code: [day01/day01.py](day01/day01.py)  
