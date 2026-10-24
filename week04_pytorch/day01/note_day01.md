@@ -1,5 +1,7 @@
 # Day 1 — Tensor Basics and Autograd
 
+- `source .venv/bin/activate`
+
 Run from the repository root:
 
 ~~~bash
