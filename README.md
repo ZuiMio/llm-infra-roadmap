@@ -14,35 +14,22 @@ Build the engineering fundamentals required to work toward:
 - SGLang / vLLM
 - Post-training infrastructure
 
-## Current Stage
+## Current Focus — Week 4: PyTorch Tensors and Autograd
 
-### Week 1 — Python Foundations
+The 12-week plan schedules Week 4 for 2026-10-27 to 2026-11-02. Study is starting on 2026-10-24, a few days early; keep the planned topic order and adjust dates if necessary.
 
-- [ ] Day 1: Python syntax, control flow, functions
-- [ ] Day 2: list / tuple / dict / set
-- [ ] Day 3: functions, arguments, scope, mutable vs immutable
-- [ ] Day 4: classes and objects
-- [ ] Day 5: exceptions, file I/O, iterators, generators
-- [ ] Day 6: NumPy and tensor-shape thinking
-- [ ] Day 7: mini project — Linear → ReLU → MSE
+- [Week 4 learning guide](week04_pytorch/README.md)
+- [Day 1 starter code](week04_pytorch/day01/day01.py)
+- [Day 1 tests](week04_pytorch/day01/test_day01.py)
+- [Day 1 notes and questions](week04_pytorch/day01/note_day01.md)
 
-### Current Focus — Week 3: NumPy and Tensor Thinking
+Run Day 1 tests from the repository root:
 
-Day 7 combines feature preprocessing with linear inference performed in batches. It completes the NumPy week before moving to PyTorch in Week 4.
+~~~bash
+python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+~~~
 
-- [Week 3 learning guide](week03_numpy/README.md)
-- [Day 7 starter code](week03_numpy/day07/day07.py)
-- [Day 7 tests](week03_numpy/day07/test_day07.py)
-- [Day 7 notes](week03_numpy/day07/note_day07.md)
-
-Run the Day 7 tests from the repository root:
-
-```bash
-python3.14 -m unittest week03_numpy.day07.test_day07 -v
-```
-
-
-The Day 7 starter functions contain TODOs, so the tests are expected to fail until the implementation is complete.
+The Day 1 starter functions intentionally contain TODOs, so tests will fail until you implement them. Start with the scalar example x = 3, y = x squared, then move to a hand-written linear forward pass and mean-squared-error loss. The Week 3 materials remain available for review.
 
 ## Roadmap
 
