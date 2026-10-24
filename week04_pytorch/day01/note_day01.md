@@ -92,3 +92,29 @@ Date: 2026-10-24
 - How I verified the fix:
 - Concepts I can explain without notes:
 - Questions to revisit:
+
+
+## Multi-machine environment checklist
+
+Keep Day 01's required tests on CPU. The goal is to learn autograd correctly, not to benchmark hardware.
+
+- [ ] Clone or pull the same repository on each machine.
+- [ ] Create a separate virtual environment on each machine; do not copy `.venv` between macOS, Linux, and Windows.
+- [ ] Install PyTorch inside that environment using the official selector: https://pytorch.org/get-started/locally/
+- [ ] Run the CPU unit tests before any accelerator-specific experiment.
+- [ ] On Windows or Linux with NVIDIA, check `torch.cuda.is_available()`.
+- [ ] On a supported Mac, optionally check `torch.backends.mps.is_available()`.
+
+Windows PowerShell test command from the repository root:
+
+~~~powershell
+python -m unittest week04_pytorch.day01.test_day01 -v
+~~~
+
+macOS / Linux test command from the repository root:
+
+~~~bash
+python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+~~~
+
+A successful GPU availability check confirms the backend can be accessed; it does not mean Day 01 needs to run on a GPU. Keep the required tests small and reproducible across environments.
