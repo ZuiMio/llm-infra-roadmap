@@ -1,6 +1,24 @@
 
 
 
+
+import torch
+
+x = torch.tensor(3.0, requires_grad=True)
+y = x ** 2
+
+print(x)
+print(y)
+print(x.grad)
+print(y.grad_fn)
+
+y.backward()
+
+print(x.grad)
+
+
+
+
 # import numpy as np
 
 # # 创建一个 0 行 5 列的空数组

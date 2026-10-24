@@ -30,7 +30,9 @@ def make_scalar_square(value: float = 3.0) -> tuple[torch.Tensor, torch.Tensor]:
     # 2. Make sure x tracks gradients.
     # 3. Compute y = x ** 2.
     # 4. Return (x, y).
-    raise NotImplementedError("Implement make_scalar_square.")
+    x = torch.tensor(value, dtype=torch.float32, requires_grad=True)
+    y = x ** 2
+    return x, y
 
 
 def linear_forward(
@@ -48,7 +50,7 @@ def linear_forward(
     """
     # TODO: Use matrix multiplication and broadcasting.
     # Do not detach the tensors; autograd must be able to track the operations.
-    raise NotImplementedError("Implement linear_forward.")
+    return inputs @ weights + bias
 
 
 def mean_squared_error(
@@ -60,7 +62,7 @@ def mean_squared_error(
     The returned loss should be a scalar tensor so loss.backward() is valid.
     """
     # TODO: Compute element-wise differences, square them, and take the mean.
-    raise NotImplementedError("Implement mean_squared_error.")
+    return ((predictions - targets) ** 2).mean()
 
 
 if __name__ == "__main__":

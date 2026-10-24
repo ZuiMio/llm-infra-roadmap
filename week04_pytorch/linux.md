@@ -1,3 +1,53 @@
+
+
+
+## After set up. Now need to install venv and pytorch
+
+`cd ~/projects/llm-infra-roadmap`
+
+`python3 --version`
+
+`pwd`
+
+`sudo apt update`
+
+`sudo apt install -y python3-venv python3-pip`
+
+`rm -rf .venv`  # 删掉旧虚拟环境
+
+`python3 -m venv .venv` # 重新创建新虚拟环境
+
+`source .venv/bin/activate`
+
+`python -m pip install --upgrade pip`
+
+```
+python -m pip install torch==2.13.0 \
+  --index-url https://download.pytorch.org/whl/cu130
+```
+验证 GPU 加速：
+```python
+python - <<'PY'
+import torch
+
+print("PyTorch:", torch.__version__)
+print("PyTorch CUDA:", torch.version.cuda)
+print("CUDA available:", torch.cuda.is_available())
+
+if torch.cuda.is_available():
+    print("GPU:", torch.cuda.get_device_name(0))
+
+    x = torch.randn(2048, 2048, device="cuda")
+    y = x @ x
+
+    print("Tensor device:", y.device)
+    print("Test passed!")
+else:
+    print("CUDA unavailable. Please check the installation.")
+PY
+```
+
+
 ## 一、先理解最终的架构
 
 MacBook Air M4
