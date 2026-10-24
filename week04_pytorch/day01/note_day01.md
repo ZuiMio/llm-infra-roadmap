@@ -5,7 +5,7 @@
 Run from the repository root:
 
 ~~~bash
-python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+python -m unittest week04_pytorch.day01.test_day01 -v
 ~~~
 
 The starter functions intentionally contain TODOs. Implement them yourself before treating the tests as complete.
@@ -114,7 +114,7 @@ python -m unittest week04_pytorch.day01.test_day01 -v
 macOS / Linux test command from the repository root:
 
 ~~~bash
-python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+python -m unittest week04_pytorch.day01.test_day01 -v
 ~~~
 
 A successful GPU availability check confirms the backend can be accessed; it does not mean Day 01 needs to run on a GPU. Keep the required tests small and reproducible across environments.
