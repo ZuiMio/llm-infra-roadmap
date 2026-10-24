@@ -31,7 +31,7 @@ Tests: [day01/test_day01.py](day01/test_day01.py)
 Notes: [note.md](note.md)
 
 ```bash
-python3.14 -m unittest week03_numpy.day01.test_day01 -v
+python -m unittest week03_numpy.day01.test_day01 -v
 ```
 
 ## Day 2 — Indexing and Copy Behavior
@@ -41,7 +41,7 @@ Tests: [day02/test_day02.py](day02/test_day02.py)
 Notes: [note_day02.md](day02/note_day02.md)
 
 ```bash
-python3.14 -m unittest week03_numpy.day02.test_day02 -v
+python -m unittest week03_numpy.day02.test_day02 -v
 ```
 
 ## Day 3 — Broadcasting and Vectorization
@@ -51,7 +51,7 @@ Tests: [day03/test_day03.py](day03/test_day03.py)
 Notes: [day03/note_day03.md](day03/note_day03.md)
 
 ```bash
-python3.14 -m unittest week03_numpy.day03.test_day03 -v
+python -m unittest week03_numpy.day03.test_day03 -v
 ```
 
 ## Day 4 — Reduction Axes, keepdims, and Precision
@@ -65,7 +65,7 @@ Today's exercises cover summation over axes, optional dimension retention, featu
 Run from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day04.test_day04 -v
+python -m unittest week03_numpy.day04.test_day04 -v
 ```
 
 ## Day 5 — Matrix Multiplication and Batch Dimensions
@@ -79,7 +79,7 @@ Today's exercises cover the difference between `*` and `@`, inner matrix dimensi
 Run from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day05.test_day05 -v
+python -m unittest week03_numpy.day05.test_day05 -v
 ```
 
 The Day 5 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
@@ -95,7 +95,7 @@ Today's exercises cover numeric and finite-value validation, feature-wise means 
 Run from the repository root:
 
 ```bash
-python3.14 -m unittest week03_numpy.day06.test_day06 -v
+python -m unittest week03_numpy.day06.test_day06 -v
 ```
 
 The Day 6 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
@@ -110,7 +110,7 @@ Notes: [day07/note_day07.md](day07/note_day07.md)
 Integrate Day 5 matrix multiplication and Day 6 feature preprocessing into one pipeline. Fit statistics on training data, reuse those statistics for new data, compute a linear forward pass, and process inference rows in batches. The batch output must match processing all rows at once.
 
 ~~~bash
-python3.14 -m unittest week03_numpy.day07.test_day07 -v
+python -m unittest week03_numpy.day07.test_day07 -v
 ~~~
 
 The Day 7 starter functions contain TODOs, so the tests are expected to fail until the implementation is complete.
