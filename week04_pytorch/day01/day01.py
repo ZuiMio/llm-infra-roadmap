@@ -9,7 +9,7 @@ Today's goals:
 - Compute a scalar mean-squared-error loss and inspect parameter gradients.
 
 Replace each TODO, then run:
-    python3.14 -m unittest week04_pytorch.day01.test_day01 -v
+    python -m unittest week04_pytorch.day01.test_day01 -v
 
 Do not use nn.Linear or torch.optim in these exercises.
 """
