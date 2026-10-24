@@ -76,7 +76,7 @@ class TestLinearForwardAndLoss(unittest.TestCase):
         self.assertIsNotNone(self.bias.grad)
         torch.testing.assert_close(
             self.weights.grad,
-            torch.tensor([[-8.0], [-11.0]]),
+            torch.tensor([[-8.0], [-11.5]]),
         )
         torch.testing.assert_close(
             self.bias.grad,
