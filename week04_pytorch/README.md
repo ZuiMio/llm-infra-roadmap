@@ -58,6 +58,23 @@ python -m unittest week04_pytorch.day01.test_day01 -v
 
 The starter functions intentionally raise NotImplementedError. Implement one function at a time, and rerun the tests after each function.
 
+
+## Day 2 — Leaf Tensors and Gradient Storage
+
+Starter code: [day02/day02.py](day02/day02.py)  
+Tests: [day02/test_day02.py](day02/test_day02.py)  
+Notes and questions: [day02/note_day02.md](day02/note_day02.md)
+
+Run from the repository root:
+
+~~~bash
+python -m unittest week04_pytorch.day02.test_day02 -v
+~~~
+
+Build the graph x → middle → output with x = 2, middle = 3x, and output = middle². Predict leaf status, requires_grad, grad_fn, and values before running backward(). Then use middle.retain_grad() to inspect the intermediate gradient.
+
+The Day 2 starter functions contain TODOs until you implement them.
+
 ## Key Concepts
 
 ### Tensor and computation graph
@@ -112,7 +129,7 @@ This personal learning repository uses direct commits to main for daily exercise
 ~~~bash
 git switch main
 git pull origin main
-python -m unittest week04_pytorch.day01.test_day01 -v
+python -m unittest week04_pytorch.day02.test_day02 -v
 git status
 git diff
 ~~~
