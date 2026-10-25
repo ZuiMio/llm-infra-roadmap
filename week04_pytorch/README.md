@@ -56,7 +56,7 @@ Run from the repository root:
 python -m unittest week04_pytorch.day01.test_day01 -v
 ~~~
 
-The starter functions intentionally raise NotImplementedError. Implement one function at a time, and rerun the tests after each function.
+Day 1 is implemented. Rerun its tests whenever you make changes, then continue to the Day 2 starter functions.
 
 
 ## Day 2 — Leaf Tensors and Gradient Storage
