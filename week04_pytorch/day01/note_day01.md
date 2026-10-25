@@ -1,6 +1,7 @@
 # Day 1 — Tensor Basics and Autograd
 
 - `source .venv/bin/activate`
+- `~/.local/bin/code tunnel --accept-server-license-terms`
 
 Run from the repository root:
 

@@ -1,17 +1,3 @@
-"""
-Week 04 - Day 02
-Leaf tensors, requires_grad, grad_fn, and retained intermediate gradients.
-
-Today's goals:
-- Distinguish leaf tensors from intermediate tensors.
-- Inspect requires_grad and grad_fn before backward().
-- See where gradients are stored after backward().
-- Use retain_grad() when you explicitly need a non-leaf tensor's .grad.
-
-Run from the repository root:
-    python -m unittest week04_pytorch.day02.test_day02 -v
-"""
-
 from __future__ import annotations
 
 import torch
@@ -29,12 +15,17 @@ def build_computation_graph(
 
     Return (x, middle, output). Do not call backward() here.
     """
-    # TODO:
     # 1. Create x as a scalar float32 leaf tensor requiring gradients.
+    x = torch.tensor(value, dtype=torch.float32, requires_grad=True)
+    
     # 2. Compute middle = 3 * x.
+    middle = 3 * x
+    
     # 3. Compute output = middle ** 2.
+    output = middle ** 2
+    
     # 4. Return all three tensors.
-    raise NotImplementedError("Implement build_computation_graph.")
+    return x, middle, output
 
 
 def backward_with_retained_intermediate(
@@ -46,12 +37,17 @@ def backward_with_retained_intermediate(
     middle.retain_grad() before output.backward() if you want middle.grad
     to be populated. Do not detach tensors from the graph.
     """
-    # TODO:
     # 1. Build the graph using build_computation_graph.
+    x, middle, output = build_computation_graph(value)
+    
     # 2. Call middle.retain_grad() before backward().
+    middle.retain_grad()
+    
     # 3. Call output.backward().
+    output.backward()
+    
     # 4. Return (x, middle, output).
-    raise NotImplementedError("Implement backward_with_retained_intermediate.")
+    return x, middle, output
 
 
 if __name__ == "__main__":
