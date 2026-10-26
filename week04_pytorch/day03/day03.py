@@ -39,7 +39,15 @@ def demonstrate_gradient_accumulation(
     # 4. Compute second_loss = 3 * x and call backward().
     # 5. Clone and save x.grad as grad_after_second.
     # 6. Return x, grad_after_first, grad_after_second.
-    raise NotImplementedError("Implement demonstrate_gradient_accumulation.")
+    x = torch.tensor(value, dtype=torch.float32, requires_grad=True)
+    first_loss = x ** 2
+    first_loss.backward()
+    grad_after_first = x.grad.clone()
+    second_loss = 3 * x
+    second_loss.backward()
+    grad_after_second = x.grad.clone()
+
+    return x, grad_after_first, grad_after_second
 
 
 def demonstrate_gradient_reset(
@@ -60,7 +68,16 @@ def demonstrate_gradient_reset(
     # 5. Compute second_loss = 3 * x and call backward().
     # 6. Clone and save x.grad as grad_after_reset.
     # 7. Return x, grad_before_reset, grad_after_reset.
-    raise NotImplementedError("Implement demonstrate_gradient_reset.")
+    x = torch.tensor(value, dtype=torch.float32, requires_grad=True)
+    first_loss = x ** 2
+    first_loss.backward()
+    grad_before_reset = x.grad.clone()
+    x.grad = None
+
+    second_loss = 3 * x
+    second_loss.backward()
+    grad_after_reset = x.grad.clone()
+    return x, grad_before_reset, grad_after_reset
 
 
 if __name__ == "__main__":
