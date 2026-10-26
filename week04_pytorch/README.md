@@ -75,6 +75,21 @@ Build the graph x → middle → output with x = 2, middle = 3x, and output = mi
 
 The Day 2 starter functions contain TODOs until you implement them.
 
+
+## Day 3 — Gradient Accumulation and Resetting Gradients
+
+Starter code: [day03/day03.py](day03/day03.py)  
+Tests: [day03/test_day03.py](day03/test_day03.py)  
+Notes and questions: [day03/note_day03.md](day03/note_day03.md)
+
+Run from the repository root:
+
+~~~bash
+python -m unittest week04_pytorch.day03.test_day03 -v
+~~~
+
+Compare two separate backward() calls without clearing .grad against a second backward() after setting .grad = None. At x=2, the first derivative is 4, the second contribution is 3, and the accumulated gradient is 7; after clearing, the next gradient is 3. The Day 3 starter functions intentionally contain TODOs until you implement them.
+
 ## Key Concepts
 
 ### Tensor and computation graph
@@ -129,7 +144,7 @@ This personal learning repository uses direct commits to main for daily exercise
 ~~~bash
 git switch main
 git pull origin main
-python -m unittest week04_pytorch.day02.test_day02 -v
+python -m unittest week04_pytorch.day03.test_day03 -v
 git status
 git diff
 ~~~
