@@ -20,15 +20,17 @@ The 12-week plan schedules Week 4 for 2026-10-27 to 2026-11-02. Study is startin
 
 - [Week 4 learning guide](week04_pytorch/README.md)
 - [Day 1 code](week04_pytorch/day01/day01.py) · [Day 1 tests](week04_pytorch/day01/test_day01.py) · [Day 1 notes](week04_pytorch/day01/note_day01.md)
-- [Day 2 starter code](week04_pytorch/day02/day02.py) · [Day 2 tests](week04_pytorch/day02/test_day02.py) · [Day 2 notes](week04_pytorch/day02/note_day02.md)
+- [Day 1 code](week04_pytorch/day01/day01.py) · [Day 1 tests](week04_pytorch/day01/test_day01.py) · [Day 1 notes](week04_pytorch/day01/note_day01.md)
+- [Day 2 code](week04_pytorch/day02/day02.py) · [Day 2 tests](week04_pytorch/day02/test_day02.py) · [Day 2 notes](week04_pytorch/day02/note_day02.md)
+- [Day 3 starter code](week04_pytorch/day03/day03.py) · [Day 3 tests](week04_pytorch/day03/test_day03.py) · [Day 3 notes](week04_pytorch/day03/note_day03.md)
 
-Run the Day 2 tests from the repository root:
+Run the Day 3 tests from the repository root:
 
 ~~~bash
-python -m unittest week04_pytorch.day02.test_day02 -v
+python -m unittest week04_pytorch.day03.test_day03 -v
 ~~~
 
-Day 1 covers the scalar derivative, a hand-written linear forward pass, MSE loss, and parameter gradients. Day 2 studies leaf tensors, requires_grad, grad_fn, and retained intermediate gradients. The Day 2 starter functions contain TODOs until you implement them. The Week 3 materials remain available for review.
+Day 1 covers scalar differentiation and a hand-written linear forward pass; Day 2 covers leaf tensors and gradient storage; Day 3 covers gradient accumulation and resetting stale gradients. Day 3 functions intentionally contain TODOs until you implement them. The Week 3 materials remain available for review.
 
 ## Roadmap
 
