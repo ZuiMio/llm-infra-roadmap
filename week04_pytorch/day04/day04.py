@@ -36,7 +36,7 @@ def linear_forward(
     # 1. Compute inputs @ weights.
     # 2. Add bias using broadcasting.
     # 3. Return the result without breaking the computation graph.
-    raise NotImplementedError("Implement linear_forward.")
+    return (inputs @ weights) + bias
 
 
 if __name__ == "__main__":
