@@ -1,6 +1,6 @@
 # Week 03 Plus — NumPy Neural-Network Math and Tiny Classifier
 
-This folder fills the major learning outcomes that were not covered by the original seven daily NumPy exercises. Keep the original Day 01–07 work; this supplement extends it rather than replacing it.
+This folder extends the original seven daily NumPy exercises to close the remaining Week 03 outcomes from the 12-week plan. Keep the original Day 01–07 work; this supplement extends it rather than replacing it.
 
 ## Gap audit against the 12-week PDF
 
