@@ -82,7 +82,7 @@ Run from the repository root:
 python -m unittest week03_numpy.day05.test_day05 -v
 ```
 
-The Day 5 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
+The Day 5 implementation is present. Run the tests and review the shape-validation logic; comments marking the original exercise steps may remain in the code.
 
 ## Day 6 — Feature Validation and Preprocessing
 
@@ -98,7 +98,7 @@ Run from the repository root:
 python -m unittest week03_numpy.day06.test_day06 -v
 ```
 
-The Day 6 starter functions contain TODOs, so the tests are expected to fail until the implementations are complete.
+The Day 6 implementation is present. Run the tests and verify its validation, population statistics, and zero-standard-deviation behavior.
 
 
 ## Day 7 — Mini Project: Batch-Feature Pipeline
@@ -113,7 +113,7 @@ Integrate Day 5 matrix multiplication and Day 6 feature preprocessing into one p
 python -m unittest week03_numpy.day07.test_day07 -v
 ~~~
 
-The Day 7 starter functions contain TODOs, so the tests are expected to fail until the implementation is complete.
+The Day 7 pipeline implementation is present. Run the tests to verify that batched predictions match full-matrix predictions.
 
 ## Git Workflow — Direct Commits to main
 
@@ -204,3 +204,26 @@ Review the diff before committing, and run the day's tests before considering th
 - [ ] Preserve all input arrays.
 - [ ] Pass all Day 7 tests.
 - [ ] Record a bug and its cause in [note_day07.md](day07/note_day07.md).
+
+
+## Plus — PDF Week 03 Outcome Catch-Up
+
+The seven daily tasks above focus on NumPy array mechanics and a preprocessing/inference pipeline. Comparing them with the Week 03 deliverables in the 12-week plan shows that the neural-network math and manually trained classifier also need explicit evidence. The Plus module supplements those outcomes without replacing Day 01–07.
+
+- [Plus supplement guide](Plus/README.md)
+- [NumPy operations](Plus/math_ops.py): Linear, ReLU, stable Softmax, CrossEntropy from logits, and LayerNorm.
+- [Tiny classifier](Plus/tiny_nn.py): 2D synthetic three-class data, manually derived gradients, and gradient descent.
+- [Operation tests](Plus/test_math_ops.py)
+- [Manual-gradient and training tests](Plus/test_tiny_nn.py)
+- [Run the integrated experiment](Plus/run_experiment.py)
+- [C++ side track](Plus/cpp/README.md)
+
+Run the supplement from the repository root:
+
+~~~bash
+python -m unittest week03_numpy.Plus.test_math_ops -v
+python -m unittest week03_numpy.Plus.test_tiny_nn -v
+python -m week03_numpy.Plus.run_experiment
+~~~
+
+The Week 03 Plus items are not considered complete just because files exist. Complete the tests, explain the shape contracts and gradient equations, and record the observed initial/final loss and classification accuracy in your notes.
