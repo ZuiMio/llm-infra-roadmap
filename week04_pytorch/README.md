@@ -90,6 +90,21 @@ python -m unittest week04_pytorch.day03.test_day03 -v
 
 Compare two separate backward() calls without clearing .grad against a second backward() after setting .grad = None. At x=2, the first derivative is 4, the second contribution is 3, and the accumulated gradient is 7; after clearing, the next gradient is 3. The Day 3 starter functions intentionally contain TODOs until you implement them.
 
+
+## Day 4 — Hand-Written Linear Forward
+
+Starter code: [day04/day04.py](day04/day04.py)  
+Tests: [day04/test_day04.py](day04/test_day04.py)  
+Notes and questions: [day04/note_day04.md](day04/note_day04.md)
+
+Run from the repository root:
+
+~~~bash
+python -m unittest week04_pytorch.day04.test_day04 -v
+~~~
+
+Implement `inputs @ weights + bias` without using nn.Linear or torch.nn.functional.linear. Predict the output shape first, calculate one example by hand, verify bias broadcasting, and make sure autograd remains connected to inputs and parameters. The Day 4 starter function intentionally contains a TODO until you implement it.
+
 ## Key Concepts
 
 ### Tensor and computation graph
@@ -144,7 +159,7 @@ This personal learning repository uses direct commits to main for daily exercise
 ~~~bash
 git switch main
 git pull origin main
-python -m unittest week04_pytorch.day03.test_day03 -v
+python -m unittest week04_pytorch.day04.test_day04 -v
 git status
 git diff
 ~~~
