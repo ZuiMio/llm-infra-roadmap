@@ -1,6 +1,6 @@
 # C++ Side Track — Vector-Based Linear Forward
 
-The Week 03 plan adds a small C++ side track alongside NumPy. This short exercise practices function signatures, loops, `std::vector<float>`, const references, mutable references, and explicit shape validation.
+The Week 03 plan adds a small C++ side track alongside NumPy. This short exercise practices function signatures, loops, `std::vector<float>`, const references, mutable references, pointers, and explicit shape validation.
 
 ## Compile and run
 
@@ -23,6 +23,7 @@ Expected output:
 - `std::vector<float>& values`: mutable reference; the caller's vector can be changed by the function.
 - `std::vector<std::vector<float>>`: a simple representation of a matrix.
 - `std::invalid_argument`: report incompatible dimensions instead of computing invalid results.
+- `float* value`: a pointer; check for `nullptr` before dereferencing and use `&counter` to pass an address.
 - Nested loops: each output feature is a sum over input features, then a bias is added.
 
 This is the beginning of the C++ side track, not a replacement for later topics such as classes, templates, RAII, smart pointers, and move semantics.
