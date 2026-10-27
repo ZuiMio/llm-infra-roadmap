@@ -105,6 +105,44 @@ python -m unittest week04_pytorch.day04.test_day04 -v
 
 Implement `inputs @ weights + bias` without using nn.Linear or torch.nn.functional.linear. Predict the output shape first, calculate one example by hand, verify bias broadcasting, and make sure autograd remains connected to inputs and parameters. The Day 4 starter function intentionally contains a TODO until you implement it.
 
+
+## Day 5 — Loss and Parameter Gradients
+
+Starter code: [day05/day05.py](day05/day05.py)  
+Tests: [day05/test_day05.py](day05/test_day05.py)  
+Notes: [day05/note_day05.md](day05/note_day05.md)
+
+~~~bash
+python -m unittest week04_pytorch.day05.test_day05 -v
+~~~
+
+Reuse the completed linear forward pass, calculate scalar MSE, call backward(), and inspect the weight and bias gradients. Derive the expected gradients by hand. No optimizer or parameter update is used on this day.
+
+## Day 6 — Manual Parameter Updates and Training
+
+Starter code: [day06/day06.py](day06/day06.py)  
+Tests: [day06/test_day06.py](day06/test_day06.py)  
+Notes: [day06/note_day06.md](day06/note_day06.md)
+
+~~~bash
+python -m unittest week04_pytorch.day06.test_day06 -v
+~~~
+
+Implement a manual SGD update under torch.no_grad(), clear gradients, and fit the relationship y = 2x + 1. Record the initial and final loss; do not use torch.optim.
+
+## Day 7 — Independent Weekly Review
+
+Starter code: [day07/weekly_review.py](day07/weekly_review.py)  
+Tests: [day07/test_weekly_review.py](day07/test_weekly_review.py)  
+Notes: [day07/note_weekly_review.md](day07/note_weekly_review.md)
+
+~~~bash
+python -m unittest week04_pytorch.day07.test_weekly_review -v
+~~~
+
+Rebuild a minimal linear training loop without importing helper implementations from the earlier days. Include the forward pass, MSE, backward(), parameter updates under torch.no_grad(), gradient clearing, and a loss history. This is the integration check for the original Week 04 goals.
+
+
 ## Key Concepts
 
 ### Tensor and computation graph
@@ -159,7 +197,7 @@ This personal learning repository uses direct commits to main for daily exercise
 ~~~bash
 git switch main
 git pull origin main
-python -m unittest week04_pytorch.day04.test_day04 -v
+python -m unittest week04_pytorch.day07.test_weekly_review -v
 git status
 git diff
 ~~~
