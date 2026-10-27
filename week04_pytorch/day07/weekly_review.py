@@ -34,24 +34,76 @@ def train_linear_model(
         initial_bias:   [out_features]
 
     Requirements:
-    - Validate the input/target/parameter shapes, steps, and learning rate.
-    - Create new trainable leaf parameters from the initial tensors.
-    - Do not use nn.Linear, torch.nn.functional.linear, or torch.optim.
-    - Write the linear forward pass as inputs @ weights + bias.
-    - Write MSE explicitly as ((predictions - targets) ** 2).mean().
-    - Call loss.backward().
-    - Update weights and bias under torch.no_grad().
-    - Clear weights.grad and bias.grad after each update.
-    - Record a loss before each update and one final loss after training.
-    - Return detached copies of (weights, bias, loss_history).
+- Validate the input/target/parameter shapes, steps, and learning rate.
+- Create new trainable leaf parameters from the initial tensors.
+- Do not use nn.Linear, torch.nn.functional.linear, or torch.optim.
+- Write the linear forward pass as inputs @ weights + bias.
+- Write MSE explicitly as ((predictions - targets) ** 2).mean().
+- Call loss.backward().
+- Update weights and bias under torch.no_grad().
+- Clear weights.grad and bias.grad after each update.
+- Record a loss before each update and one final loss after training.
+- Return detached copies of (weights, bias, loss_history).
     """
-    # TODO:
     # 1. Validate steps and learning_rate.
-    # 2. Validate tensor dimensions and the compatible shape contract above.
+    if not isinstance(steps, int) or steps <= 0:
+        raise ValueError("steps must be a positive integer.")
+    if not isinstance(learning_rate, (int, float)) or learning_rate <= 0:
+        raise ValueError("learning_rate must be a positive number.")
+
+    # 2. Validate tensor dimensions and the compatible shape contract.
+    if inputs.ndim != 2:
+        raise ValueError("inputs must be a 2D tensor [batch_size, in_features].")
+    if targets.ndim != 2:
+        raise ValueError("targets must be a 2D tensor [batch_size, out_features].")
+    if initial_weights.ndim != 2:
+        raise ValueError("initial_weights must be a 2D tensor [in_features, out_features].")
+    if initial_bias.ndim != 1:
+        raise ValueError("initial_bias must be a 1D tensor [out_features].")
+
+    batch_size, in_features = inputs.shape
+    _, out_features = initial_weights.shape
+
+    if targets.shape != (batch_size, out_features):
+        raise ValueError("targets shape must match [batch_size, out_features].")
+    if initial_weights.shape[0] != in_features:
+        raise ValueError("initial_weights rows must match inputs' in_features.")
+    if initial_bias.shape[0] != out_features:
+        raise ValueError("initial_bias size must match initial_weights' out_features.")
+
     # 3. Clone initial_weights and initial_bias into leaf tensors requiring grad.
-    # 4. Implement the complete training loop from the docstring.
-    # 5. Return trained parameter copies and the history.
-    raise NotImplementedError("Implement train_linear_model.")
+    weights = initial_weights.clone().detach().requires_grad_(True)
+    bias = initial_bias.clone().detach().requires_grad_(True)
+
+    loss_history: list[float] = []
+
+    # 4. Implement the complete training loop.
+    for _ in range(steps):
+        # Forward pass & loss calculation
+        predictions = inputs @ weights + bias
+        loss = ((predictions - targets) ** 2).mean()
+        
+        # Record loss before the update
+        loss_history.append(loss.item())
+
+        # Compute gradients
+        loss.backward()
+
+        # Update parameters manually under no_grad() and clear gradients
+        with torch.no_grad():
+            weights -= learning_rate * weights.grad
+            bias -= learning_rate * bias.grad
+            weights.grad.zero_()
+            bias.grad.zero_()
+
+    # Record one final loss after training
+    with torch.no_grad():
+        final_predictions = inputs @ weights + bias
+        final_loss = ((final_predictions - targets) ** 2).mean()
+        loss_history.append(final_loss.item())
+
+    # 5. Return detached copies of (weights, bias, loss_history).
+    return weights.detach().clone(), bias.detach().clone(), loss_history
 
 
 if __name__ == "__main__":
