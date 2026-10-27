@@ -23,14 +23,19 @@ The 12-week plan schedules Week 4 for 2026-10-27 to 2026-11-02. Study is startin
 - [Day 2 code](week04_pytorch/day02/day02.py) · [Day 2 tests](week04_pytorch/day02/test_day02.py) · [Day 2 notes](week04_pytorch/day02/note_day02.md)
 - [Day 3 code](week04_pytorch/day03/day03.py) · [Day 3 tests](week04_pytorch/day03/test_day03.py) · [Day 3 notes](week04_pytorch/day03/note_day03.md)
 - [Day 4 starter code](week04_pytorch/day04/day04.py) · [Day 4 tests](week04_pytorch/day04/test_day04.py) · [Day 4 notes](week04_pytorch/day04/note_day04.md)
+- [Day 5 starter code](week04_pytorch/day05/day05.py) · [Day 5 tests](week04_pytorch/day05/test_day05.py) · [Day 5 notes](week04_pytorch/day05/note_day05.md)
+- [Day 6 starter code](week04_pytorch/day06/day06.py) · [Day 6 tests](week04_pytorch/day06/test_day06.py) · [Day 6 notes](week04_pytorch/day06/note_day06.md)
+- [Day 7 review starter](week04_pytorch/day07/weekly_review.py) · [Day 7 tests](week04_pytorch/day07/test_weekly_review.py) · [Weekly review notes](week04_pytorch/day07/note_weekly_review.md)
 
-Run the Day 4 tests from the repository root:
+Run the Day 5–7 tests from the repository root:
 
 ~~~bash
-python -m unittest week04_pytorch.day04.test_day04 -v
+python -m unittest week04_pytorch.day05.test_day05 -v
+python -m unittest week04_pytorch.day06.test_day06 -v
+python -m unittest week04_pytorch.day07.test_weekly_review -v
 ~~~
 
-Day 1 covers scalar differentiation and the first linear-layer example; Day 2 covers leaf tensors and gradient storage; Day 3 covers gradient accumulation and resetting; Day 4 deepens the hand-written linear forward pass, shape contracts, bias broadcasting, and autograd connectivity. The Day 4 starter function contains a TODO until you implement it. The Week 3 materials remain available for review.
+Day 1 covers scalar differentiation; Day 2 covers leaf tensors and gradient storage; Day 3 covers gradient accumulation and resetting; Day 4 covers linear forward and tensor shapes; Day 5 covers MSE and parameter gradients; Day 6 covers manual updates and loss reduction; Day 7 rebuilds a tiny training loop from scratch. The Day 4–7 exercises include starter functions to implement. The Week 3 materials remain available for review.
 
 ## Roadmap
 
