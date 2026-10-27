@@ -18,6 +18,7 @@ Build the engineering fundamentals required to work toward:
 
 The 12-week plan schedules Week 4 for 2026-10-27 to 2026-11-02. Study is starting on 2026-10-24, a few days early; keep the planned topic order and adjust dates if necessary.
 
+- [Week 3 Plus catch-up guide](week03_numpy/Plus/README.md) — supplemental neural-network math, manual gradients, synthetic classifier, and C++ side exercise.
 - [Week 4 learning guide](week04_pytorch/README.md)
 - [Day 1 code](week04_pytorch/day01/day01.py) · [Day 1 tests](week04_pytorch/day01/test_day01.py) · [Day 1 notes](week04_pytorch/day01/note_day01.md)
 - [Day 2 code](week04_pytorch/day02/day02.py) · [Day 2 tests](week04_pytorch/day02/test_day02.py) · [Day 2 notes](week04_pytorch/day02/note_day02.md)
