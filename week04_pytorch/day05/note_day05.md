@@ -51,7 +51,7 @@ The loss is a scalar, so the simple `loss.backward()` call computes its gradient
 
 ## Exercise 3 — Hand-calculate parameter gradients
 
-For a batch of N samples and MSE averaged across all output elements:
+For this exercise there is one output feature, so MSE averages over the N samples:
 
 ~~~text
 dL/dW = (2/N) * X.T @ (predictions - targets)
