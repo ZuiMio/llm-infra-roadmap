@@ -41,6 +41,13 @@ void scale_in_place(std::vector<float>& values, float scale) {
     }
 }
 
+void increment(float* value) {
+    if (value == nullptr) {
+        throw std::invalid_argument("value pointer must not be null");
+    }
+    *value += 1.0F;
+}
+
 int main() {
     const std::vector<float> input{1.0F, 2.0F, 3.0F};
     const std::vector<std::vector<float>> weights{
@@ -61,5 +68,8 @@ int main() {
 
     std::vector<float> values{1.0F, 2.0F};
     scale_in_place(values, 2.0F);
+
+    float counter = 0.0F;
+    increment(&counter);  // Pass the address of counter; the function updates it.
     return 0;
 }
