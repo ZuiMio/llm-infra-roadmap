@@ -7,6 +7,7 @@ from torch.utils.data import Dataset, DataLoader
 
 import matplotlib.pyplot as plt  # Fixed: imported pyplot correctly
 
+
 # Prepare dataset
 class DiabetesDataset(Dataset):
     def __init__(self, filepath):
@@ -14,7 +15,6 @@ class DiabetesDataset(Dataset):
         self.len = xy.shape[0]
         self.x_data = torch.from_numpy(xy[:, :-1])
         self.y_data = torch.from_numpy(xy[:, [-1]])
-
 
     def __getitem__(self, index):
         return self.x_data[index], self.y_data[index]
