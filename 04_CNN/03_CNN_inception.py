@@ -51,7 +51,7 @@ class InceptionA(torch.nn.Module):
         branch_pool = F.avg_pool2d(x, kernel_size=3, stride=1, padding=1)
         branch_pool = self.branch_pool(branch_pool)
 
-        outputs = [branch1x1, branch5x5, branch3x3, branch_pool]
+        outputs = [branch1x1, branch5x5, branch3x3, branch_pool]    # channel: 88=24+16+24+24
         return torch.cat(outputs, dim=1)    # Concatenate outputs along dim=1
 
 class Net(torch.nn.Module):

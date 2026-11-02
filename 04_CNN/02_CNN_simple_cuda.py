@@ -27,7 +27,7 @@ test_loader = DataLoader(test_dataset,
                          shuffle=False,
                          batch_size=batch_size)
 
-## model
+## model　
 class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
@@ -57,7 +57,7 @@ optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.5)
 def train(epoch):
     running_loss = 0.0
     for batch_idx, data in enumerate(train_loader, 0):
-        inputs, target = data
+        inputs, target = data   # inputs.shape: (64, 1, 28, 28): B, C, H, W
 ############################## cuda ##############################
         inputs, target = inputs.to(device), target.to(device)
 ##################################################################

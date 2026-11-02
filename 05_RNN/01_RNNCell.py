@@ -8,12 +8,13 @@ idx2char = ['e', 'h', 'l', 'o']
 x_data = [1, 0, 2, 2, 3]
 y_data = [3, 1, 2, 3, 2]
 one_hot_lookup = [[1, 0, 0, 0],
-[0, 1, 0, 0],
-[0, 0, 1, 0],
-[0, 0, 0, 1]]
+                  [0, 1, 0, 0],
+                  [0, 0, 1, 0],
+                  [0, 0, 0, 1]]
 x_one_hot = [one_hot_lookup[x] for x in x_data]
-inputs = torch.Tensor(x_one_hot).view(-1, batch_size, input_size)
-labels = torch.LongTensor(y_data).view(-1, 1)
+inputs = torch.Tensor(x_one_hot).view(-1, batch_size, input_size)   # seq, batch, input channel # (5, 1, 4)
+labels = torch.LongTensor(y_data).view(-1, 1)   # (5, 1)
+# hidden:(1, 4)
 
 class Model(torch.nn.Module):
     def __init__(self, input_size, hidden_size, batch_size):
@@ -25,8 +26,8 @@ class Model(torch.nn.Module):
         self.rnncell = torch.nn.RNNCell(input_size=self.input_size, hidden_size=self.hidden_size)
 
     def forward(self, input, hidden):
-        hidden = self.rnncell(input, hidden)
-        return hidden
+        hidden = self.rnncell(input, hidden)    # (1, 4) # hidden:(1, 4)
+        return hidden   
     
     def init_hidden(self):
         return torch.zeros(self.batch_size, self.hidden_size)
@@ -44,7 +45,7 @@ def train():
 
         for input, label in zip(inputs, labels):
             hidden = net(input, hidden)
-            loss += criterion(hidden, label)
+            loss += criterion(hidden, label)    # (1, 4) , # (1, )
             _, idx = hidden.max(dim=1)
             print(idx2char[idx.item()], end='')
 
@@ -53,5 +54,4 @@ def train():
         print(', Epoch [%d/15] loss=%.4f' % (epoch+1, loss.item()))
 
 if __name__ == '__main__':
-    print(inputs.shape, '\n', labels.shape)
     train()

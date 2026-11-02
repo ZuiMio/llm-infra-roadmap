@@ -3,18 +3,59 @@
 
 
 import torch
+import torch.nn.functional as F
 
-x = torch.tensor(3.0, requires_grad=True)
-y = x ** 2
+vocab_size = 4
+embedding_size = 3
 
-print(x)
-print(y)
-print(x.grad)
-print(y.grad_fn)
+# Embedding
+emb = torch.nn.Embedding(vocab_size, embedding_size)
 
-y.backward()
+# 比較用Linear（Biasなし）
+linear = torch.nn.Linear(
+    vocab_size,
+    embedding_size,
+    bias=False
+)
 
-print(x.grad)
+# 同じ重みを設定する
+with torch.no_grad():
+    linear.weight.copy_(emb.weight.T)
+
+# 文字ID
+ids = torch.tensor([1, 0, 2])
+
+# 方法1：Embedding
+output_emb = emb(ids)
+
+# 方法2：One-Hot + Linear
+one_hot = F.one_hot(
+    ids,
+    num_classes=vocab_size
+).float()
+
+output_linear = linear(one_hot)
+
+print(output_emb)
+print(output_linear)
+
+print(torch.allclose(output_emb, output_linear))
+# True
+
+
+# import torch
+
+# x = torch.tensor(3.0, requires_grad=True)
+# y = x ** 2
+
+# print(x)
+# print(y)
+# print(x.grad)
+# print(y.grad_fn)
+
+# y.backward()
+
+# print(x.grad)
 
 
 
